@@ -6,7 +6,7 @@
 #    By: smun <smun@student.42seoul.kr>             +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/02/02 16:51:52 by smun              #+#    #+#              #
-#    Updated: 2021/02/03 00:50:56 by smun             ###   ########.fr        #
+#    Updated: 2021/02/03 01:16:25 by smun             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,13 +22,15 @@ LIB_DIR = -L./
 LIB = -lasm
 NAME = libasm.a
 EXEC = read_write \
-		strlen
+		strlen \
+		strcpy
 
 M_DIR = ./mandatory/
 
 M = ft_read \
 	ft_write \
-	ft_strlen
+	ft_strlen \
+	ft_strcpy
 M_SRC = $(addprefix $(M_DIR), $(addsuffix .s, $(M)))
 OBJ = $(M_SRC:.s=.o)
 
