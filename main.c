@@ -6,14 +6,14 @@
 /*   By: smun <smun@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/02 16:51:22 by smun              #+#    #+#             */
-/*   Updated: 2021/02/02 16:51:26 by smun             ###   ########.fr       */
+/*   Updated: 2021/02/02 21:01:03 by smun             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "helloworld.h"
+#include <helloworld.h>
 
 int		main(void)
 {
-	hello();
+	world();
 	return (0);
 }

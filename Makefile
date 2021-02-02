@@ -6,7 +6,7 @@
 #    By: smun <smun@student.42seoul.kr>             +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/02/02 16:51:52 by smun              #+#    #+#              #
-#    Updated: 2021/02/02 17:00:17 by smun             ###   ########.fr        #
+#    Updated: 2021/02/02 19:15:14 by smun             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,9 +34,10 @@ MOBJ = $(MAIN_SRC:.c=.o)
 all : $(NAME)
 
 $(NAME)		:	$(OBJ)
+			rm -rf $(NAME)
 			$(AR) $(AFLAGS) $(NAME) $(OBJ)
 
-$(MAIN)		:	$(MOBJ)
+$(MAIN)		:	$(NAME) $(MOBJ)
 			$(CC) $(CFLAGS) $(INC) $(LIB_DIR) $(LIB) $(MOBJ) -o $(MAIN)
 
 clean		:
@@ -49,7 +50,9 @@ fclean		:	clean
 
 re			:	fclean all
 
-%.o			:	%.c
+%.o			:	%.s
 			$(NASM) $(NFLAGS) $(INC) -s $< -o $@
 
+%.o			:	%.c
+			$(CC) $(CFLAGS) $(INC) -c $< -o $@
 

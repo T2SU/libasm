@@ -6,7 +6,7 @@
 /*   By: smun <smun@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/02 16:50:19 by smun              #+#    #+#             */
-/*   Updated: 2021/02/02 16:50:39 by smun             ###   ########.fr       */
+/*   Updated: 2021/02/02 21:00:58 by smun             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,5 +14,6 @@
 # define HELLOWORLD_H
 
 void		hello(void);
+int			world(void);
 
 #endif
