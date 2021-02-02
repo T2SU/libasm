@@ -2,5 +2,6 @@
 *.o
 a.out
 *.a
-main
+read_write
+strlen
 lorem_copy*

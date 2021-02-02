@@ -1,23 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   libasm.h                                           :+:      :+:    :+:   */
+/*   strlen.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: smun <smun@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/02/02 16:50:19 by smun              #+#    #+#             */
-/*   Updated: 2021/02/03 00:19:37 by smun             ###   ########.fr       */
+/*   Created: 2021/02/03 00:22:57 by smun              #+#    #+#             */
+/*   Updated: 2021/02/03 00:51:42 by smun             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef LIBASM_H
-# define LIBASM_H
+#include <stdio.h>
+#include <string.h>
+#include <libasm.h>
+#include <unistd.h>
 
-typedef long			ssize_t;
-typedef unsigned long	size_t;
+int			main(void)
+{
+	size_t	len;
+	ssize_t	sz;
+	char	buf[512];
 
-ssize_t					ft_read(int fildes, void *buf, size_t nbyte);
-ssize_t					ft_write(int fildes, void *buf, size_t nbyte);
-size_t					ft_strlen(const char *s);
+	if ((sz = read(STDIN_FILENO, buf, 512) > 0))
+	{
+		len = strlen(buf);
+		printf("[ %-10s] [%10s ]: %zu\n", "libc", "strlen", len);
+		len = ft_strlen(buf);
+		printf("[ %-10s] [%10s ]: %zu\n", "libasm", "ft_strlen", len);
+	}
 
-#endif
+	return (0);
+}

@@ -6,7 +6,7 @@
 #    By: smun <smun@student.42seoul.kr>             +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/02/02 16:51:52 by smun              #+#    #+#              #
-#    Updated: 2021/02/02 23:46:03 by smun             ###   ########.fr        #
+#    Updated: 2021/02/03 00:50:56 by smun             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,16 +21,16 @@ INC = -I./
 LIB_DIR = -L./
 LIB = -lasm
 NAME = libasm.a
-MAIN = main
+EXEC = read_write \
+		strlen
 
-M_DIR = ./
+M_DIR = ./mandatory/
 
 M = ft_read \
-	ft_write
+	ft_write \
+	ft_strlen
 M_SRC = $(addprefix $(M_DIR), $(addsuffix .s, $(M)))
 OBJ = $(M_SRC:.s=.o)
-MAIN_SRC = $(addsuffix .c, $(MAIN))
-MOBJ = $(MAIN_SRC:.c=.o)
 
 all : $(NAME)
 
@@ -38,22 +38,22 @@ $(NAME)		:	$(OBJ)
 			rm -rf $(NAME)
 			$(AR) $(AFLAGS) $(NAME) $(OBJ)
 
-$(MAIN)		:	$(NAME) $(MOBJ)
-			$(CC) $(CFLAGS) $(INC) $(LIB_DIR) $(LIB) $(MOBJ) -o $(MAIN)
+$(EXEC)		:	$(NAME)
+			$(CC) $(CFLAGS) $(INC) $(LIB_DIR) $(LIB) $(addsuffix .c, $@) -o $@
+
+exec		:	$(EXEC)
+
 
 clean		:
 			rm -rf $(OBJ)
-			rm -rf $(MOBJ)
 
 fclean		:	clean
 			rm -rf $(NAME)
-			rm -rf $(MAIN)
+			rm -rf $(EXEC)
 
 re			:	fclean all
 
+rex			:	fclean exec
+
 %.o			:	%.s
 			$(NASM) $(NFLAGS) $(INC) -s $< -o $@
-
-%.o			:	%.c
-			$(CC) $(CFLAGS) $(INC) -c $< -o $@
-

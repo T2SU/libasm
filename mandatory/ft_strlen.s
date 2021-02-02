@@ -1,27 +1,42 @@
 ; ************************************************************************** ;
 ;                                                                            ;
 ;                                                        :::      ::::::::   ;
-;   ft_write.s                                         :+:      :+:    :+:   ;
+;   ft_strlen.s                                        :+:      :+:    :+:   ;
 ;                                                    +:+ +:+         +:+     ;
 ;   By: smun <smun@student.42seoul.kr>             +#+  +:+       +#+        ;
 ;                                                +#+#+#+#+#+   +#+           ;
-;   Created: 2021/02/02 23:45:21 by smun              #+#    #+#             ;
-;   Updated: 2021/02/02 23:44:08 by smun             ###   ########.fr       ;
+;   Created: 2021/02/03 00:09:16 by smun              #+#    #+#             ;
+;   Updated: 2021/02/03 00:19:54 by smun             ###   ########.fr       ;
 ;                                                                            ;
 ; ************************************************************************** ;
 
-			global	_ft_write
-			extern	___error
+			global	_ft_strlen
 
 			section	.text
-; ssize_t	ft_write(int fildes, void *buf, size_t nbyte)
-_ft_write:	push	rdi
-			mov		rax, 0x2000004	; write syscall number: ((2 << 24) | 0x4)
-			syscall
-			jnc		_return			; jmp to _return if carry flag is 0
-			mov		rdi, rax
-			call	___error
-			mov		[rax], rdi
-			mov		rax, -1
-_return:	pop		rdi
+;	size_t	ft_strlen(const char *s)
+;	{
+;		size_t	size; // rcx
+;		char	chr; // rax
+;
+;		size = 0;
+;		while (1)
+;		{
+;			chr = *s;
+;			if (!chr)
+;				break ;
+;			size++;
+;		}
+;		return (size);
+;	}
+_ft_strlen:	push	rcx
+			mov		rcx, 0
+_loop:		mov		al, [rdi]
+			test	al, al
+			je		_return
+			inc		rcx
+			inc		rdi
+			jmp		_loop
+_return:
+			mov		rax, rcx
+			pop		rcx
 			ret
