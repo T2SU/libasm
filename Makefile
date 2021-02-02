@@ -6,7 +6,7 @@
 #    By: smun <smun@student.42seoul.kr>             +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/02/02 16:51:52 by smun              #+#    #+#              #
-#    Updated: 2021/02/02 19:15:14 by smun             ###   ########.fr        #
+#    Updated: 2021/02/02 23:46:03 by smun             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,7 +25,8 @@ MAIN = main
 
 M_DIR = ./
 
-M = helloworld
+M = ft_read \
+	ft_write
 M_SRC = $(addprefix $(M_DIR), $(addsuffix .s, $(M)))
 OBJ = $(M_SRC:.s=.o)
 MAIN_SRC = $(addsuffix .c, $(MAIN))
