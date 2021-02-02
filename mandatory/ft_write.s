@@ -6,7 +6,7 @@
 ;   By: smun <smun@student.42seoul.kr>             +#+  +:+       +#+        ;
 ;                                                +#+#+#+#+#+   +#+           ;
 ;   Created: 2021/02/02 22:30:18 by smun              #+#    #+#             ;
-;   Updated: 2021/02/03 01:40:51 by smun             ###   ########.fr       ;
+;   Updated: 2021/02/03 01:59:34 by smun             ###   ########.fr       ;
 ;                                                                            ;
 ; ************************************************************************** ;
 
@@ -17,13 +17,30 @@
 ;	ssize_t		ft_write(int fildes, void *buf, size_t nbyte)
 ;	{
 ;		int		*errptr; // rdi
+;		ssize_t	ret;     // [rbp]
 ;
+;		ret = syscall[0x2000004](fileds, buf, nbyte);
+;		if ((__rflags & 1) == 0) // syscall was successful?
+;			goto _return;
+;		errptr = __error();
+;		*errptr = (int)ret;
+;		ret = -1;
+;	_return:
+;		return (ret);
+;	}
 ;
-_ft_write:	mov		rax, 0x2000004	; write syscall number: ((2 << 24) | 0x4)
+_ft_write:	push	rbp
+			mov		rbp, rsp
+			sub		rsp, 8				; ssize_t ret;
+			mov		rax, 0x2000004		; write syscall number: ((2 << 24) | 0x4)
 			syscall
-			jnc		_return			; jmp to _return if carry flag is 0
-			mov		rcx, rax
-			call	___error
-			mov		[rax], rcx
-			mov		rax, -1
-_return:	ret
+			jnc		_return				; jmp to _return if carry flag is 0
+			mov		[rbp], rax			; ret = $?
+			call	___error			; __error();
+			mov		rdi, rax			; errptr = $?
+			mov		rax, [rbp]
+			mov		dword [rdi], eax	; *errptr = (int)ret;
+			mov		rax, -1				; ret = -1;
+_return:	mov		rsp, rbp
+			pop		rbp
+			ret
