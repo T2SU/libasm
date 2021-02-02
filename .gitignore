@@ -6,3 +6,5 @@ read_write
 strlen
 lorem_copy*
 strcpy
+strdup
+strcmp
