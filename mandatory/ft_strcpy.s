@@ -51,7 +51,7 @@
 ;	_return:
 ;		return (dest);
 ;	}
-_ft_strcpy:	push	rbp
+_ft_strcpy:	push	rbp				; stack frame
 			mov		rbp, rsp
 			sub		rsp, 8			; char	*dest;
 			mov		[rbp], rdi		; dest = dst;
@@ -66,5 +66,5 @@ _loop:		mov		al, [rsi]		; chr = *src;
 			jmp		_loop			; goto _loop;
 _return:	mov		rax, [rbp]		; return (dest);
 			mov		rsp, rbp
-			pop		rbp
+			pop		rbp				; restore stack frame
 			ret
