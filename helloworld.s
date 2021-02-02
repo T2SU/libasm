@@ -10,8 +10,8 @@ _hello:
 			;mov		rsi, message
 			mov		rdx, 14
 			syscall
-			pop rdx
-			pop rsi
+			pop		rdx
+			pop		rsi
 			ret
 
 _world:		push	rdi
