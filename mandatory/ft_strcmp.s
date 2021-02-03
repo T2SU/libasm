@@ -85,7 +85,7 @@ _loop:		mov		al, [rdi]		; c1 = (unsigned char)*s1;
 			mov		rax, 0			; tmp = 0;
 			jmp		_return			; goto _return;
 _compare:	sub		al, dl			; c1 -= c2;
-			jb		_neg			; if ($c1 < $c2) goto _neg;
+			jc		_neg			; if ($c1 < $c2) goto _neg;
 			test	al, al			; if (c1 != 0)
 			jne		_pos			; goto _pos;
 			inc		rdi				; s1++;

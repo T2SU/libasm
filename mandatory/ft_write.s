@@ -17,7 +17,7 @@
 ;	ssize_t		ft_write(int fildes, void *buf, size_t nbyte)
 ;	{
 ;		int		*errptr; // rdi
-;		ssize_t	ret;     // [rbp]
+;		ssize_t	ret;     // [rbp-8]
 ;
 ;		ret = syscall[0x2000004](fileds, buf, nbyte);
 ;		if ((__rflags & 1) == 0) // syscall was successful?
@@ -35,10 +35,10 @@ _ft_write:	push	rbp
 			mov		rax, 0x2000004		; write syscall number: ((2 << 24) | 0x4)
 			syscall
 			jnc		_return				; jmp to _return if carry flag is 0
-			mov		[rbp], rax			; ret = $?
+			mov		[rbp-8], rax		; ret = $?
 			call	___error			; __error();
 			mov		rdi, rax			; errptr = $?
-			mov		rax, [rbp]
+			mov		rax, [rbp-8]
 			mov		dword [rdi], eax	; *errptr = (int)ret;
 			mov		rax, -1				; ret = -1;
 _return:	mov		rsp, rbp
