@@ -2,12 +2,7 @@
 *.o
 a.out
 *.a
-read_write
-strlen
 lorem_copy*
-strcpy
-strdup
-strcmp
 *.dSYM
-ft_atoi_base
 main
+mainb
