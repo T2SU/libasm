@@ -6,7 +6,7 @@
 #    By: smun <smun@student.42seoul.kr>             +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/02/02 16:51:52 by smun              #+#    #+#              #
-#    Updated: 2021/02/03 17:37:12 by smun             ###   ########.fr        #
+#    Updated: 2021/02/04 00:03:19 by smun             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,12 +21,7 @@ INC = -I./
 LIB_DIR = -L./
 LIB = -lasm
 NAME = libasm.a
-EXEC = read_write \
-		strlen \
-		strcpy \
-		strcmp \
-		strdup \
-		ft_atoi_base
+EXEC = main
 
 M_DIR = ./mandatory/
 
@@ -48,8 +43,7 @@ $(NAME)		:	$(OBJ)
 $(EXEC)		:	$(NAME)
 			$(CC) $(CFLAGS) $(INC) $(LIB_DIR) $(LIB) $(addsuffix .c, $@) -o $@
 
-exec		:	$(EXEC)
-
+main		:	$(EXEC)
 
 clean		:
 			rm -rf $(OBJ)

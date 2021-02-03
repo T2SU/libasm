@@ -10,3 +10,4 @@ strdup
 strcmp
 *.dSYM
 ft_atoi_base
+main
