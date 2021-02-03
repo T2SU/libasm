@@ -6,7 +6,7 @@
 /*   By: smun <smun@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/02 16:50:19 by smun              #+#    #+#             */
-/*   Updated: 2021/02/03 12:43:41 by smun             ###   ########.fr       */
+/*   Updated: 2021/02/03 17:33:08 by smun             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,5 +22,7 @@ size_t					ft_strlen(const char *s);
 char					*ft_strcpy(char *dst, const char *src);
 int						ft_strcmp(const char *s1, const char *s2);
 char					*ft_strdup(const char *s1);
+
+int						ft_atoi_base_c(char *str, char *base);
 
 #endif

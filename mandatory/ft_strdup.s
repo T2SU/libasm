@@ -78,14 +78,14 @@
 ;		char			chr; // al
 ;
 ;		i = 0;
-;	_loop_len:
+;	loop_len:
 ;		srcbuf = s1 + i;
 ;		chr = *srcbuf;
 ;		if (!chr)
-;			goto _break_len;
+;			goto break_len;
 ;		i++;
-;		goto _loop_len;
-;	_break_len:
+;		goto loop_len;
+;	break_len:
 ;		src = s1;
 ;		len = i;
 ;		i++;
@@ -96,17 +96,18 @@
 ;		dstbuf = $?;
 ;		srcbuf = src;
 ;		i = 0;
-;	_loop_cpy:
+;	loop_cpy:
 ;		if (i >= len)
-;			goto _break_cpy;
+;			goto break_cpy;
 ;		chr = *srcbuf;
 ;		*dstbuf = chr;
 ;		srcbuf++;
 ;		dstbuf++;
 ;		i++;
-;		goto _loop_cpy;
-;	_break_cpy:
+;		goto loop_cpy;
+;	break_cpy:
 ;		*dstbuf = 0;
+;	_return:
 ;		return (buf);
 ;	}
 ;
@@ -115,13 +116,13 @@ _ft_strdup:	push	rbp					; stack frame
 			sub		rsp, 18h			; char *src, *buf; size_t len;
 			push	rcx					; size_t i;
 			mov		rcx, 0				; i = 0;
-_loop_len:	lea		rsi, [rdi + rcx]	; srcbuf = s1 + i;
+loop_len:	lea		rsi, [rdi + rcx]	; srcbuf = s1 + i;
 			mov		al, [rsi]			; chr = *srcbuf;
 			test	al, al				; if (!chr)
-			je		_break_len			; goto _break_len;
+			je		break_len			; goto break_len;
 			inc		rcx					; i++;
-			jmp		_loop_len			; goto _loop_len;
-_break_len:	mov		[rbp-8], rdi		; src = s1;
+			jmp		loop_len			; goto loop_len;
+break_len:	mov		[rbp-8], rdi		; src = s1;
 			mov		[rbp-18h], rcx		; len = i;
 			inc		rcx;				; i++;
 			mov		edi, ecx			; malloc((unsigned int)i);
@@ -132,17 +133,17 @@ _break_len:	mov		[rbp-8], rdi		; src = s1;
 			mov		rdi, rax			; dstbuf = $?;
 			mov		rsi, [rbp-8]		; srcbuf = src;
 			mov		rcx, 0				; i = 0;
-_loop_cpy:	cmp		rcx, [rbp-18h]		; if (i >= len)
-			jge		_break_cpy			; goto _break_cpy;
+loop_cpy:	cmp		rcx, [rbp-18h]		; if (i >= len)
+			jge		break_cpy			; goto break_cpy;
 			mov		al, [rsi]			; chr = *srcbuf;
 			mov		byte [rdi], al		; *dstbuf = chr;
 			inc		rsi					; srcbuf++;
 			inc		rdi					; dstbuf++;
 			inc		rcx					; i++;
-			jmp		_loop_cpy			; goto _loop_cpy;
-_break_cpy:	mov		byte [rdi], 0		; *dstbuf = 0;
+			jmp		loop_cpy			; goto loop_cpy;
+break_cpy:	mov		byte [rdi], 0		; *dstbuf = 0;
 			mov		rax, [rbp-10h]		; return (src);
-			pop		rcx
+_return:	pop		rcx
 			mov		rsp, rbp
 			pop		rbp
-_return:	ret
+			ret

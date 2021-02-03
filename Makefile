@@ -6,7 +6,7 @@
 #    By: smun <smun@student.42seoul.kr>             +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/02/02 16:51:52 by smun              #+#    #+#              #
-#    Updated: 2021/02/03 15:35:57 by smun             ###   ########.fr        #
+#    Updated: 2021/02/03 17:37:12 by smun             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,7 +25,8 @@ EXEC = read_write \
 		strlen \
 		strcpy \
 		strcmp \
-		strdup
+		strdup \
+		ft_atoi_base
 
 M_DIR = ./mandatory/
 
