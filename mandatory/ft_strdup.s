@@ -110,8 +110,7 @@
 ;		return (buf);
 ;	}
 ;
-_ft_strdup:
-			push	rbp					; stack frame
+_ft_strdup:	push	rbp					; stack frame
 			mov		rbp, rsp
 			sub		rsp, 18h			; char *src, *buf; size_t len;
 			push	rcx					; size_t i;
