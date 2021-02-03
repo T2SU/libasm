@@ -7,22 +7,21 @@
 						extern	_ft_strlen
 						section	.text
 
-; static char		*get_strnchr(char *s, int chr, int len)
-_get_strnchr:
-get_strnchr_loop:		mov		al, byte [rdi]
+; static char		*ft_memchr(char *s, int chr, int len)
+_ft_memchr:				mov		al, byte [rdi]
 						test	al, al
-						je		get_strnchr_not_found
+						je		ft_memchr_not_found
 						test	rdx, rdx
-						je		get_strnchr_not_found
+						je		ft_memchr_not_found
 						dec		rdx
 						movzx	eax, al
 						cmp		eax, esi
-						je		get_strnchr_found
+						je		ft_memchr_found
 						inc		rdi
-						jmp		get_strnchr_loop
-get_strnchr_found:		mov		rax, rdi
+						jmp		_ft_memchr
+ft_memchr_found:		mov		rax, rdi
 						ret
-get_strnchr_not_found:	xor		rax, rax
+ft_memchr_not_found:	xor		rax, rax
 						ret
 
 ; static int		is_valid_base(char *base)
@@ -37,22 +36,24 @@ _is_valid_base:			push	rbp
 						cmp		rax, 1
 						jle		is_valid_base_error
 						mov		[rbp-8], rax
-						mov		rcx, 0
+						xor		rcx, rcx
 is_valid_base_loop:		cmp		rcx, [rbp-8]
 						jge		is_valid_base_ok
-						lea		rdi, [rel is_valid_base_sign]
+						lea		rdi, [rel s_sign]
 						mov		rsi, [rbp-10h]
 						lea		rsi, [rsi + rcx]
+						movzx	esi, byte [rsi]
 						mov		rdx, 2
-						call	_get_strnchr
+						call	_ft_memchr
 						test	rax, rax
-						je		is_valid_base_error
+						jne		is_valid_base_error
 						cmp		rcx, 1
 						jle		is_valid_base_next
 						mov		rdi, [rbp-10h]
 						lea		rsi, [rdi + rcx]
+						movzx	esi, byte [rsi]
 						mov		rdx, rcx
-						call	_get_strnchr
+						call	_ft_memchr
 						test	rax, rax
 						jne		is_valid_base_error
 is_valid_base_next:		inc		rcx
@@ -86,7 +87,7 @@ cvt_by_base_loop:		mov		al, byte [rsi]
 						mov		rdi, [rbp-20h]
 						movzx	rsi, al
 						mov		rdx, [rbp-28h]
-						call	_get_strnchr
+						call	_ft_memchr
 						test	rax, rax
 						je		cvt_by_base_return
 						mov		rdx, [rbp-20h]
@@ -97,6 +98,7 @@ cvt_by_base_loop:		mov		al, byte [rsi]
 						imul	rdx
 						mov		rdx, [rbp-30h]
 						add		rax, rdx
+						mov		[rbp-8], rax
 						mov		rsi, [rbp-18h]
 						inc		rsi
 						mov		[rbp-18h], rsi
@@ -120,10 +122,10 @@ _ft_atoi_base:			push	rbp
 						call	_is_valid_base
 						test	rax, rax
 						je		ft_atoi_base_error
-space_loop:				lea		rdi, [rel ft_atoi_base_space]
+space_loop:				lea		rdi, [rel s_space]
 						movzx	rsi, byte [rcx]
 						mov		rdx, 6
-						call	_get_strnchr
+						call	_ft_memchr
 						test	rax, rax
 						je		space_end
 						inc		rcx
@@ -133,7 +135,7 @@ sign_loop:				mov		al, byte [rcx]
 						cmp		al, 2Bh ; '+'
 						je		sign_next
 						cmp		al, 2Dh ; '-'
-						jne		space_end
+						jne		sign_end
 						neg		rdx
 sign_next:				inc		rcx
 						jmp		sign_loop
@@ -154,5 +156,5 @@ ft_atoi_base_return:	pop		rcx
 						ret
 
 						section	.data
-is_valid_base_sign:		db		"+-", 0x0
-ft_atoi_base_space:		db		"\t\n\v\f\r ", 0x0
+s_sign:					db		"+-", 0x0
+s_space:				db		0x9, 0xA, 0xB, 0xC, 0xD, 0x20, 0x0

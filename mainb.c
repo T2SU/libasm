@@ -6,7 +6,7 @@
 /*   By: smun <smun@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 00:03:58 by smun              #+#    #+#             */
-/*   Updated: 2021/02/04 02:53:26 by smun             ###   ########.fr       */
+/*   Updated: 2021/02/04 03:35:10 by smun             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ static void		test_ft_atoi_base(void)
 	do_test_ft_atoi_base("", "1");
 	do_test_ft_atoi_base("12345", "");
 	do_test_ft_atoi_base("12345", "a12356a7");
+
 	do_test_ft_atoi_base("     \t\v\f     +---------++-1235aaa776644", "a123567");
 	do_test_ft_atoi_base("     \n\r\t     +---------++-1235aaa7766"  , "a123567");
 	do_test_ft_atoi_base("            +----8----++-1235aaa7766", "a123567");

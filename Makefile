@@ -6,7 +6,7 @@
 #    By: smun <smun@student.42seoul.kr>             +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/02/02 16:51:52 by smun              #+#    #+#              #
-#    Updated: 2021/02/04 02:58:37 by smun             ###   ########.fr        #
+#    Updated: 2021/02/04 03:15:12 by smun             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -62,7 +62,9 @@ fclean		:	clean
 
 re			:	fclean all
 
-rem			:	fclean $(EXEC)
+rem			:	fclean main
+
+remb		:	fclean mainb
 
 %.o			:	%.s
 			$(NASM) $(NFLAGS) $(INC) -s $< -o $@

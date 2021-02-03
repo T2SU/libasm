@@ -6,13 +6,13 @@
 /*   By: smun <smun@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/03 17:30:35 by smun              #+#    #+#             */
-/*   Updated: 2021/02/04 02:51:34 by smun             ###   ########.fr       */
+/*   Updated: 2021/02/04 03:41:19 by smun             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <libasm_bonus.h>
 
-static char		*get_strnchr(char *s, int chr, int len)
+static char		*ft_memchr(char *s, int chr, int len)
 {
 	while (*s && len--)
 	{
@@ -44,10 +44,10 @@ static int		is_valid_base(char *base)
 	i = 0;
 	while (i < len)
 	{
-		if (get_strnchr("+-", base[i], 2))
+		if (ft_memchr("+-", base[i], 2))
 			return (0);
 		if (i > 0)
-			if (get_strnchr(base, base[i], i - 1))
+			if (ft_memchr(base, base[i], i - 1))
 				return (0);
 		i++;
 	}
@@ -63,7 +63,7 @@ static int		cvt_by_base(char *str, char *base, int blen)
 	nbr = 0;
 	while (*str)
 	{
-		pos = get_strnchr(base, *str, blen);
+		pos = ft_memchr(base, *str, blen);
 		if (!pos)
 			break ;
 		i = (int)(pos - base);
@@ -80,7 +80,7 @@ int				ft_atoi_base_c(char *str, char *base)
 
 	if (!is_valid_base(base))
 		return (0);
-	while (get_strnchr("\t\n\v\f\r ", *str, 6))
+	while (ft_memchr("\t\n\v\f\r ", *str, 6))
 		str++;
 	neg = 1;
 	while (*str == '-' || *str == '+')
