@@ -8,3 +8,4 @@ lorem_copy*
 strcpy
 strdup
 strcmp
+*.dSYM
