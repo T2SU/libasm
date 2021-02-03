@@ -35,8 +35,6 @@
 ;
 ;		src = s1;
 ;		$1 = ft_strlen(s1);
-;		if (!$1)
-;			return (0);
 ;		len = $1;
 ;		$2 = malloc(len + 1);
 ;		if (!$2)
@@ -50,8 +48,6 @@ _ft_strdup:	push	rbp					; stack frame
 			sub		rsp, 20h			; char *src, *buf; size_t len;
 			mov		[rbp-8], rdi		; src = s1;
 			call	_ft_strlen			; ft_strlen(s1);
-			test	rax, rax			; if (!$?)
-			je		_return				; goto _return;
 			mov		[rbp-18h], rax		; len = $?;
 			mov		rdi, rax
 			inc		rdi

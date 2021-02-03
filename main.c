@@ -6,7 +6,7 @@
 /*   By: smun <smun@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 00:03:58 by smun              #+#    #+#             */
-/*   Updated: 2021/02/04 02:46:16 by smun             ###   ########.fr       */
+/*   Updated: 2021/02/04 04:57:15 by smun             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 #include <errno.h>
 #include <stdlib.h>
 
+#define BUFFER	8192
 #define GRAY	write(1, "\x1b[0m", 4)
 #define YELLOW	write(1, "\x1b[33m", 5)
 #define GREEN	write(1, "\x1b[32m", 5)
@@ -27,10 +28,10 @@ static void		test_strlen(void)
 {
 	size_t		len;
 	ssize_t		sz;
-	char		buf[512];
+	char		buf[BUFFER];
 
 	write(1, "Please type any string: ", 24);
-	if ((sz = read(STDIN_FILENO, buf, 512)) > 0)
+	if ((sz = read(STDIN_FILENO, buf, BUFFER)) > 0)
 	{
 		buf[sz - 1] = '\0';
 		len = strlen(buf);
@@ -44,13 +45,13 @@ static void		test_strdup(void)
 {
 	size_t		len;
 	ssize_t		sz;
-	char		buf[512];
+	char		buf[BUFFER];
 	char		*copied_libc;
 	char		*copied_libasm;
 	int			cmp;
 
 	write(STDOUT_FILENO, "Text to duplicate: ", 19);
-	if ((sz = read(STDIN_FILENO, buf, 512)) > 0)
+	if ((sz = read(STDIN_FILENO, buf, BUFFER)) > 0)
 	{
 		buf[sz - 1] = '\0';
 		copied_libc = strdup(buf);
@@ -60,7 +61,9 @@ static void		test_strdup(void)
 		len = strlen(copied_libasm);
 		printf("[ %-10s] [%10s ]: %s(len=%zu)\n", "libasm", "ft_strlen", copied_libasm, len);
 		cmp = strcmp(copied_libc, copied_libasm);
-		printf("[ %-24s]: %d\n", "comparision", cmp);
+		if (cmp < 0) cmp = -1;
+		if (cmp > 0) cmp = 1;
+		printf("[ %-24s]: %d\n", "comparision (strcmp)", cmp);
 		free(copied_libc);
 		free(copied_libasm);
 	}
@@ -69,13 +72,13 @@ static void		test_strdup(void)
 static void		test_strcpy(void)
 {
 	ssize_t		sz;
-	char		buf[512];
-	char		buf_libc[512];
-	char		buf_libasm[512];
+	char		buf[BUFFER];
+	char		buf_libc[BUFFER];
+	char		buf_libasm[BUFFER];
 	char		*dest;
 
 	write(STDOUT_FILENO, "Text to copy: ", 14);
-	if ((sz = read(STDIN_FILENO, buf, 512)) > 0)
+	if ((sz = read(STDIN_FILENO, buf, BUFFER)) > 0)
 	{
 		buf[sz - 1] = '\0';
 		dest = strcpy(buf_libc, buf);
@@ -88,15 +91,15 @@ static void		test_strcpy(void)
 static void		test_strcmp(void)
 {
 	ssize_t		sz;
-	char		buf1[512];
-	char		buf2[512];
+	char		buf1[BUFFER];
+	char		buf2[BUFFER];
 	int			cmp;
 
 	write(STDOUT_FILENO, "First Text: ", 12);
-	if ((sz = read(STDIN_FILENO, buf1, 512)) > 0)
+	if ((sz = read(STDIN_FILENO, buf1, BUFFER)) > 0)
 		buf1[sz - 1] = '\0';
 	write(STDOUT_FILENO, "Second Text: ", 13);
-	if ((sz = read(STDIN_FILENO, buf2, 512)) > 0)
+	if ((sz = read(STDIN_FILENO, buf2, BUFFER)) > 0)
 		buf2[sz - 1] = '\0';
 	cmp = strcmp(buf1, buf2);
 	if (cmp < 0) cmp = -1;
@@ -116,7 +119,7 @@ static void		print_error(const char *type, ssize_t ret)
 static void		test_read_write(void)
 {
 	ssize_t		ret;
-	char		buf[512];
+	char		buf[BUFFER];
 	int			fd_origin;
 	int			fd_target;
 
@@ -124,7 +127,7 @@ static void		test_read_write(void)
 		print_error("open1", fd_origin);
 	if ((fd_target = open("lorem_copy_libc.txt", O_WRONLY | O_TRUNC | O_CREAT | O_EXLOCK, 0644)) < 0)
 		print_error("open2", fd_target);
-	while ((ret = read(fd_origin, buf, 512)) > 0)
+	while ((ret = read(fd_origin, buf, BUFFER)) > 0)
 	{
 		ret = write(fd_target, buf, ret);
 		print_error("libc", ret);
@@ -134,7 +137,7 @@ static void		test_read_write(void)
 		print_error("open1", fd_origin);
 	if ((fd_target = open("lorem_copy_libasm.txt", O_WRONLY | O_TRUNC | O_CREAT | O_EXLOCK, 0644)) < 0)
 		print_error("open2", fd_target);
-	while ((ret = ft_read(fd_origin, buf, 512)) > 0)
+	while ((ret = ft_read(fd_origin, buf, BUFFER)) > 0)
 	{
 		ret = ft_write(fd_target, buf, ret);
 		print_error("libasm", ret);
@@ -144,18 +147,18 @@ static void		test_read_write(void)
 static void		test_read_write_custom(void)
 {
 	ssize_t		ret;
-	char		buf[512];
+	char		buf[BUFFER];
 
-	ret = read(8, buf, 512);
+	ret = read(8, buf, BUFFER);
 	print_error("libc", ret);
-	ret = ft_read(8, buf, 512);
+	ret = ft_read(8, buf, BUFFER);
 	print_error("libasm", ret);
 	printf("\n\n");
 
 	write(1, "Please type any string: ", 24);
-	ret = read(0, NULL, 512);
+	ret = read(0, NULL, BUFFER);
 	print_error("libc", ret);
-	ret = ft_read(0, NULL, 512);
+	ret = ft_read(0, NULL, BUFFER);
 	print_error("libasm", ret);
 	printf("\n\n");
 
@@ -167,21 +170,21 @@ static void		test_read_write_custom(void)
 
 	strcpy(buf, "Lorem ipsum dolor sit amet");
 
-	ret = write(11, buf, 512);
+	ret = write(11, buf, BUFFER);
 	print_error("libc", ret);
-	ret = ft_write(11, buf, 512);
+	ret = ft_write(11, buf, BUFFER);
 	print_error("libasm", ret);
 	printf("\n\n");
 
-	ret = write(0, buf, 512);
+	ret = write(0, buf, BUFFER);
 	print_error("libc", ret);
-	ret = ft_write(0, buf, 512);
+	ret = ft_write(0, buf, BUFFER);
 	print_error("libasm", ret);
 	printf("\n\n");
 
-	ret = write(1, NULL, 512);
+	ret = write(1, NULL, BUFFER);
 	print_error("libc", ret);
-	ret = ft_write(1, NULL, 512);
+	ret = ft_write(1, NULL, BUFFER);
 	print_error("libasm", ret);
 	printf("\n\n");
 
