@@ -6,7 +6,7 @@
 #    By: smun <smun@student.42seoul.kr>             +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/02/02 16:51:52 by smun              #+#    #+#              #
-#    Updated: 2021/02/04 00:03:19 by smun             ###   ########.fr        #
+#    Updated: 2021/02/04 00:22:23 by smun             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -43,8 +43,6 @@ $(NAME)		:	$(OBJ)
 $(EXEC)		:	$(NAME)
 			$(CC) $(CFLAGS) $(INC) $(LIB_DIR) $(LIB) $(addsuffix .c, $@) -o $@
 
-main		:	$(EXEC)
-
 clean		:
 			rm -rf $(OBJ)
 
@@ -54,7 +52,7 @@ fclean		:	clean
 
 re			:	fclean all
 
-rex			:	fclean exec
+rem			:	fclean $(EXEC)
 
 %.o			:	%.s
 			$(NASM) $(NFLAGS) $(INC) -s $< -o $@

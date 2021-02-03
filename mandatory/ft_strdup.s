@@ -47,17 +47,17 @@
 ;
 _ft_strdup:	push	rbp					; stack frame
 			mov		rbp, rsp
-			sub		rsp, 18h			; char *src, *buf; size_t len;
+			sub		rsp, 20h			; char *src, *buf; size_t len;
 			mov		[rbp-8], rdi		; src = s1;
 			call	_ft_strlen			; ft_strlen(s1);
 			test	rax, rax			; if (!$?)
-			jne		_return				; goto _return;
+			je		_return				; goto _return;
 			mov		[rbp-18h], rax		; len = $?;
 			mov		rdi, rax
 			inc		rdi
 			call	_malloc				; malloc(len + 1)
 			test	rax, rax			; if (!$?)
-			jne		_return				; goto _return;
+			je		_return				; goto _return;
 			mov		[rbp-10h], rax		; buf = $?;
 			mov		rdi, rax
 			mov		rsi, [rbp-8]

@@ -4,73 +4,90 @@
 ;
 
 						global	_ft_atoi_base
+						extern	_ft_strlen
 						section	.text
 
 ; static char		*get_strnchr(char *s, int chr, int len)
 _get_strnchr:
-_get_strnchr_loop:		mov		al, rdi
+get_strnchr_loop:		mov		al, rdi
 						test	al, al
-						je		_not_found
+						je		get_strnchr_not_found
 						test	rdx, rdx
-						je		_not_found
+						je		get_strnchr_not_found
 						dec		rdx
 						cmp		al, esi
-						je		_found
+						je		get_strnchr_found
 						inc		rdi
-						jmp		_loop
-_get_strnchr_found:		mov		rax, rdi
+						jmp		get_strnchr_loop
+get_strnchr_found:		mov		rax, rdi
 						ret
-_get_strnchr_not_found:	xor		rax, rax
-						ret
-
-; static int		get_strlen(const char *s)
-_get_strlen:			push	rcx
-						mov		rcx, 0
-_get_strlen_loop:		mov		al, [rdi]
-						test	al, al
-						je		_return
-						inc		rcx
-						inc		rdi
-						jmp		_loop
-_get_strlen_return:		mov		rax, rcx
-						pop		rcx
+get_strnchr_not_found:	xor		rax, rax
 						ret
 
 ; static int		is_valid_base(char *base)
 ;	t_uint64		len;	// [rbp-8]
-;	t_uint64		i;		// [rbp-10h]
-;	char			*_base;	// [rbp-18h]
+;	char			*_base;	// [rbp-10h]
 _is_valid_base:			push	rbp
 						mov		rbp, rsp
-						sub		rsp, 18h
+						sub		rsp, 10h
 						push	rcx
-						call	_get_strlen
+						mov		[rbp-10h], rdi
+						call	_ft_strlen
 						cmp		rax, 1
-						jle		_is_valid_base_error
+						jle		is_valid_base_error
 						mov		[rbp-8], rax
-						mov		[rbp-18h], rdi
 						mov		rcx, 0
-_is_valid_base_loop:	cmp		rcx, [rbp-8]
-						jge		_is_valid_base_ok
+is_valid_base_loop:		cmp		rcx, [rbp-8]
+						jge		is_valid_base_ok
 						lea		rdi, [rel _is_valid_base_sign]
-						mov		rsi, [rbp-18h]
+						mov		rsi, [rbp-10h]
 						lea		rsi, [rsi + rcx]
 						mov		rdx, 2
 						call	_get_strnchr
 						test	rax, rax
-						je		_is_valid_base_error
-						; :52
-
-
-_is_valid_base_error:	xor		rax, rax
-						jmp		_is_valid_base_return
-_is_valid_base_ok:		mov		rax, 1
-_is_valid_base_return:	pop		rcx
+						je		is_valid_base_error
+						cmp		rcx, 1
+						jle		is_valid_base_next
+						mov		rdi, [rbp-10h]
+						lea		rsi, [rdi + rcx]
+						mov		rdx, rcx
+						call	_get_strnchr
+						test	rax, rax
+						jne		is_valid_base_error
+is_valid_base_next:		inc		rcx
+						jmp		is_valid_base_loop
+is_valid_base_error:	xor		rax, rax
+						jmp		is_valid_base_return
+is_valid_base_ok:		mov		rax, 1
+is_valid_base_return:	pop		rcx
 						mov		rsp, rbp
 						pop		rbp
 						ret
-						int3
-_is_valid_base_sign:	db		"+-", 0x0
 
+; static int		cvt_by_base(char *str, char *base, int blen)
+;	t_int64			nbr;	// [rbp-8]
+;	char			*pos;	// [rbp-10h]
+;	char			*_str;	// [rbp-18h]
+;	char			*_base;	// [rbp-20h]
+;	int				blen;	// [rbp-28h]
+_cvt_by_base:			push	rbp
+						mov		rbp, rsp
+						sub		rsp, 28h
+						mov		[rbp-8], 0
+						mov		[rbp-18h], rdi
+						mov		[rbp-20h], rsi
+						mov		[rbp-28h], rdx
+cvt_by_base_loop:		lea		rsi, [rbp-18h]
+						mov		al, byte [rsi]
+						test	al, al
+						je		cvt_by_base_return
+
+cvt_by_base_return:		mov		rax, [rbp-8]
+						mov		rsp, rbp
+						pop		rbp
+						ret
 
 _ft_atoi_base:
+
+						section	.data
+is_valid_base_sign:		db		"+-", 0x0
