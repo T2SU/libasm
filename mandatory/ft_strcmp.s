@@ -48,50 +48,50 @@
 ;		unsigned char	c2; // dl
 ;		int				tmp; // rax
 ;
-;	_loop:
+;	loop:
 ;		c1 = (unsigned char)*s1;
 ;		c2 = (unsigned char)*s2;
 ;		if (c1)
-;			goto _compare;
+;			goto compare;
 ;		if (c2)
-;			goto _compare;
+;			goto compare;
 ;		tmp = 0;
 ;		goto _return;
-;	_compare:
+;	compare:
 ;		c1 -= c2;
 ;		if ($c1 < $c2)
-;			goto _neg;
+;			goto neg;
 ;		if (c1 != 0)
-;			goto _pos;
+;			goto pos;
 ;		s1++;
 ;		s2++;
-;		goto _loop;
-;	_pos:
+;		goto loop;
+;	pos:
 ;		tmp = 1;
 ;		goto _return;
-;	_neg:
+;	neg:
 ;		tmp = -1;
 ;	_return:
 ;		return (tmp);
 ;	}
 ;
 _ft_strcmp:
-_loop:		mov		al, [rdi]		; c1 = (unsigned char)*s1;
+loop:		mov		al, [rdi]		; c1 = (unsigned char)*s1;
 			mov		dl, [rsi]		; c2 = (unsigned char)*s2;
 			test	al, al			; if (c1)
-			jne		_compare		; goto _compare;
+			jne		compare			; goto compare;
 			test	dl, dl			; if (c2)
-			jne		_compare		; goto _compare;
+			jne		compare			; goto compare;
 			mov		rax, 0			; tmp = 0;
 			jmp		_return			; goto _return;
-_compare:	sub		al, dl			; c1 -= c2;
-			jc		_neg			; if ($c1 < $c2) goto _neg;
+compare:	sub		al, dl			; c1 -= c2;
+			jc		neg				; if ($c1 < $c2) goto _neg;
 			test	al, al			; if (c1 != 0)
-			jne		_pos			; goto _pos;
+			jne		pos				; goto pos;
 			inc		rdi				; s1++;
 			inc		rsi				; s2++;
-			jmp		_loop			; goto _loop;
-_pos:		mov		rax, 1			; tmp = 1;
+			jmp		loop			; goto loop;
+pos:		mov		rax, 1			; tmp = 1;
 			jmp		_return			; goto _return;
-_neg:		mov		rax, -1			; tmp = -1;
+neg:		mov		rax, -1			; tmp = -1;
 _return:	ret						; return (tmp);
