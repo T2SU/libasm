@@ -6,7 +6,7 @@
 /*   By: smun <smun@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 00:03:58 by smun              #+#    #+#             */
-/*   Updated: 2021/02/04 03:35:10 by smun             ###   ########.fr       */
+/*   Updated: 2021/02/04 04:18:39 by smun             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,17 +35,19 @@ static void		test_ft_atoi_base(void)
 	do_test_ft_atoi_base("1234567890", "0123456789");
 	do_test_ft_atoi_base("10000000000000000", "01");
 	do_test_ft_atoi_base("5F5E100", "0123456789ABCDEF");
-	do_test_ft_atoi_base("104133633034", "0123456");
-	do_test_ft_atoi_base("-13344221014043", "01234");
-	do_test_ft_atoi_base("5EHL50J", "0123456789ABCDEFGHIJKLMNOPQ");
+	do_test_ft_atoi_base("104134211161", "0123456");
+	do_test_ft_atoi_base("-13344223434043", "01234");
+	do_test_ft_atoi_base("5EHNCKA", "0123456789ABCDEFGHIJKLMNOPQ");
 
 	do_test_ft_atoi_base("!@#$%^&*()", ")!@#$%^&*(");
 	do_test_ft_atoi_base("IOOOOOOOOOOOOOOOO", "OI");
 	do_test_ft_atoi_base("<C<B\"\'\'", "\'\"\?>.<,QWERT ABC");
-	do_test_ft_atoi_base("Qa QRRtRRaR ", "aQqR Tt");
-	do_test_ft_atoi_base("-_{{}}||_=_}=}{", "=_|{}");
-	do_test_ft_atoi_base("D'wyDZr", "ZXCS DF12345;:'\"qwertyas@#$");
-	do_test_ft_atoi_base("^$G$M", "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz!@#$%^&*()_= ");
+
+	do_test_ft_atoi_base("Qa QR qQQQtQ", "aQqR Tt");
+	do_test_ft_atoi_base("-_{{}}||{}{}=}{", "=_|{}");
+	do_test_ft_atoi_base("D'ws;t4", "ZXCS DF12345;:'\"qwertyas@#$");
+	do_test_ft_atoi_base("^$O$M", "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz!@#$%^&*()_= ");
+
 	do_test_ft_atoi_base("!", "!@#$");
 
 	do_test_ft_atoi_base("123456", "1234563");
