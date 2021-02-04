@@ -6,7 +6,7 @@
 /*   By: smun <smun@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 00:03:58 by smun              #+#    #+#             */
-/*   Updated: 2021/02/04 04:57:15 by smun             ###   ########.fr       */
+/*   Updated: 2021/02/04 19:01:40 by smun             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,7 +144,7 @@ static void		test_read_write(void)
 	}
 }
 
-static void		test_read_write_custom(void)
+static void		test_read_write_exception(void)
 {
 	ssize_t		ret;
 	char		buf[BUFFER];
@@ -207,7 +207,7 @@ int				main(void)
 	ft_write(1, " 2:  ft_strcpy\n", 15);
 	ft_write(1, " 3:  ft_strcmp\n", 15);
 	ft_write(1, " 4:  ft_write, ft_read\n", 23);
-	ft_write(1, " 5:  ft_write, ft_read custom\n", 30);
+	ft_write(1, " 5:  ft_write, ft_read exception\n", 33);
 	ft_write(1, " 6:  ft_strdup\n", 15);
 	ft_write(1, "\n", 1);
 	YELLOW;
@@ -231,7 +231,7 @@ int				main(void)
 		else if (!ft_strcmp(input, "4"))
 			test_read_write();
 		else if (!ft_strcmp(input, "5"))
-			test_read_write_custom();
+			test_read_write_exception();
 		else if (!ft_strcmp(input, "6"))
 			test_strdup();
 	}

@@ -42,7 +42,7 @@ is_valid_base_loop:		cmp		rcx, [rbp-8]		; i < len
 						lea		rdi, [rel s_sign]
 						mov		rsi, [rbp-10h]
 						lea		rsi, [rsi + rcx]
-						movzx	esi, byte [rsi]
+						movzx	rsi, byte [rsi]
 						mov		rdx, 2
 						call	_ft_memchr			; ft_memchr("+-", *(base + i), 2)
 						test	rax, rax
@@ -51,7 +51,7 @@ is_valid_base_loop:		cmp		rcx, [rbp-8]		; i < len
 						jle		is_valid_base_next
 						mov		rdi, [rbp-10h]
 						lea		rsi, [rdi + rcx]
-						movzx	esi, byte [rsi]
+						movzx	rsi, byte [rsi]
 						mov		rdx, rcx
 						dec		rdx
 						call	_ft_memchr			; ft_memchr(base, *(base + i), i - 1)

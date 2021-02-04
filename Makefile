@@ -6,12 +6,13 @@
 #    By: smun <smun@student.42seoul.kr>             +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/02/02 16:51:52 by smun              #+#    #+#              #
-#    Updated: 2021/02/04 03:15:12 by smun             ###   ########.fr        #
+#    Updated: 2021/02/04 19:00:18 by smun             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror -g -fsanitize=address
+CFLAGS = -Wall -Wextra -Werror -g
+#CFLAGS = -Wall -Wextra -Werror -g -fsanitize=address -D ASAN=1
 NASM = nasm
 NFLAGS = -f macho64
 AR = ar
@@ -33,9 +34,16 @@ M_SRC = $(addprefix $(M_DIR), $(addsuffix .s, $(M)))
 OBJ = $(M_SRC:.s=.o)
 
 B_DIR = ./bonus/
-B = ft_atoi_base
+B = ft_atoi_base \
+	ft_list_remove_if
 B_SRC = $(M_SRC) $(addprefix $(B_DIR), $(addsuffix _bonus.s, $(B)))
 BOBJ = $(B_SRC:.s=.o)
+
+MAIN_SRC = main.c
+MAIN_OBJ = $(MAIN_SRC:.c=.o)
+MAINB_SRC = mainb.c ft_atoi_base.c ft_list.c
+MAINB_OBJ = $(MAINB_SRC:.c=.o)
+
 
 all : $(NAME)
 
@@ -47,11 +55,11 @@ bonus		:	$(BOBJ)
 			rm -rf $(NAME)
 			$(AR) $(AFLAGS) $(NAME) $(BOBJ)
 
-main		:	$(NAME) main.o
-			$(CC) $(CFLAGS) $(LIB_DIR) $(LIB) main.o -o main
+main		:	$(NAME) $(MAIN_OBJ)
+			$(CC) $(CFLAGS) $(LIB_DIR) $(LIB) $(MAIN_OBJ) -o $@
 
-mainb		:	bonus mainb.o ft_atoi_base.o
-			$(CC) $(CFLAGS) $(LIB_DIR) $(LIB) mainb.o ft_atoi_base.o -o mainb
+mainb		:	bonus $(MAINB_OBJ)
+			$(CC) $(CFLAGS) $(LIB_DIR) $(LIB) $(MAINB_OBJ) -o $@
 
 clean		:
 			rm -rf $(OBJ)

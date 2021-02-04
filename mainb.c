@@ -6,7 +6,7 @@
 /*   By: smun <smun@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 00:03:58 by smun              #+#    #+#             */
-/*   Updated: 2021/02/04 04:18:39 by smun             ###   ########.fr       */
+/*   Updated: 2021/02/04 19:00:50 by smun             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,116 @@ static void		test_ft_atoi_base(void)
 	do_test_ft_atoi_base("            +----8----++-1235aaa7766", "a123567");
 }
 
+static void		ft_list_clear(t_list **begin_list, void(*free_fct)(void *))
+{
+	t_list		*tmp;
+	t_list		*lst;
+
+	if (!begin_list || !(lst = *begin_list))
+		return ;
+	while (lst)
+	{
+		tmp = lst;
+		lst = lst->next;
+		free_fct(tmp->data);
+		free(tmp);
+	}
+}
+
+static void		my_free(void *data)
+{
+	printf("Freed: %s\n", (const char*)data);
+	free(data);
+}
+
+static void		prepare_test_ft_list_remove_if(t_list **lst)
+{
+	*lst = NULL;
+	ft_list_push_front_c(lst, strdup("Lorem"));
+	ft_list_push_front_c(lst, strdup("lorem"));
+	ft_list_push_front_c(lst, strdup("ipsum"));
+	ft_list_push_front_c(lst, strdup("Lorem"));
+	ft_list_push_front_c(lst, strdup("dolor"));
+	ft_list_push_front_c(lst, strdup("sit"));
+	ft_list_push_front_c(lst, strdup("amet"));
+	ft_list_push_front_c(lst, strdup("Lorem"));
+	ft_list_push_front_c(lst, strdup("consectetur"));
+	ft_list_push_front_c(lst, strdup("adipiscing"));
+	ft_list_push_front_c(lst, strdup("Lorem"));
+	ft_list_push_front_c(lst, strdup("elit"));
+	ft_list_push_front_c(lst, strdup("Aliquam"));
+	ft_list_push_front_c(lst, strdup("Lorem"));
+	ft_list_push_front_c(lst, strdup("lacinia"));
+	ft_list_push_front_c(lst, strdup("massa"));
+	ft_list_push_front_c(lst, strdup("Lorem"));
+	ft_list_push_front_c(lst, strdup("dapibus"));
+	ft_list_push_front_c(lst, strdup("Lorem"));
+	ft_list_push_front_c(lst, strdup("porta"));
+	ft_list_push_front_c(lst, strdup("erat"));
+	ft_list_push_front_c(lst, strdup("sit"));
+	ft_list_push_front_c(lst, strdup("Lorem"));
+	ft_list_push_front_c(lst, strdup("Lorem"));
+	ft_list_push_front_c(lst, strdup("Lorem"));
+}
+
+static void		do_ft_list_remove_if(const char *t, void (*func_remove_if)())
+{
+	t_list		*begin_lst;
+	t_list		*lst;
+	int			i;
+	int			loremcnt;
+
+	prepare_test_ft_list_remove_if(&begin_lst);
+	lst = begin_lst;
+	i = 0;
+	loremcnt = 0;
+	while (lst)
+	{
+		printf("[ ( %10s)%3d. ]: %-12s\x1b[33m", t, ++i, (const char*)lst->data);
+		if (!strcmp(lst->data, "Lorem"))
+			printf(" (Found %d Lorem)", ++loremcnt);
+		printf("\x1b[0m\n");
+		lst = lst->next;
+	}
+	printf("-------------------------------\n");
+	func_remove_if(&begin_lst, "Lorem", &strcmp, &my_free);
+	lst = begin_lst;
+	i = 0;
+	while (lst)
+	{
+		printf("[ ( %10s)%3d. ]: %-12s\n", t, ++i, (const char*)lst->data);
+		lst = lst->next;
+	}
+	ft_list_clear(&begin_lst, &free);
+}
+
+static void		test_ft_list_remove_if(void)
+{
+
+	GREEN;
+	printf("To display a C Piscine's function's result, Press an enter key!");
+	getchar();
+	GRAY;
+	do_ft_list_remove_if("c piscine", &ft_list_remove_if_c);
+	WHITE;
+#ifndef ASAN
+	printf("\n\n === [[ MemoryLeak Tesk (leaks) ]] ===\n\n");
+	system("leaks mainb");
+#endif
+	GREEN;
+
+	printf("To test LIBASM's function, Press an enter key!");
+	getchar();
+	GRAY;
+	do_ft_list_remove_if("libasm", &ft_list_remove_if);
+	WHITE;
+#ifndef ASAN
+	printf("\n\n === [[ MemoryLeak Tesk (leaks) ]] ===\n\n");
+	system("leaks mainb");
+#endif
+	GREEN;
+}
+
 int				main(void)
 {
 	char		input[16];
@@ -71,6 +181,7 @@ int				main(void)
 	ft_write(1, "==== Test List ====\n", 20);
 	WHITE;
 	ft_write(1, " 1:  ft_atoi_base\n", 18);
+	ft_write(1, " 2:  ft_list_remove_if\n", 23);
 	ft_write(1, "\n", 1);
 	YELLOW;
 	ft_write(1, " X:  Quit\n", 10);
@@ -86,6 +197,8 @@ int				main(void)
 			break ;
 		else if (!ft_strcmp(input, "1"))
 			test_ft_atoi_base();
+		else if (!ft_strcmp(input, "2"))
+			test_ft_list_remove_if();
 	}
 	ft_write(1, "Bye~\n", 5);
 	return (0);
