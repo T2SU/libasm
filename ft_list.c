@@ -6,7 +6,7 @@
 /*   By: smun <smun@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/03 17:30:35 by smun              #+#    #+#             */
-/*   Updated: 2021/02/04 22:50:10 by smun             ###   ########.fr       */
+/*   Updated: 2021/02/05 02:37:13 by smun             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,18 +51,20 @@ static void	swap_c(t_list *a, t_list *b)
 void		ft_list_sort_c(t_list **begin_list, int (*cmp)())
 {
 	t_list	*lst;
+	t_list	*lst2;
 
 	if (begin_list == NULL || !(lst = *begin_list))
 		return ;
-	while (lst->next)
+	while (lst)
 	{
-		if (cmp(lst->data, lst->next->data) > 0)
+		lst2 = *begin_list;
+		while (lst2->next)
 		{
-			swap_c(lst, lst->next);
-			lst = *begin_list;
+			if (cmp(lst2->data, lst2->next->data) > 0)
+				swap_c(lst2, lst2->next);
+			lst2 = lst2->next;
 		}
-		else
-			lst = lst->next;
+		lst = lst->next;
 	}
 }
 

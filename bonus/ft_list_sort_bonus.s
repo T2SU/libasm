@@ -12,42 +12,48 @@
 				section	.text
 ;	void		ft_list_sort(t_list **_begin_list, int (*_cmp)())
 ;		t_list	*lst;			// [rbp-8]
-;		t_list	**begin_list;	// [rbp-10h]
-;		void	*cmp;			// [rbp-18h]
+;		t_list	*lst2;			// [rbp-10h]
+;		t_list	**begin_list;	// [rbp-18h]
+;		void	*cmp;			// [rbp-20h]
 ;
 _ft_list_sort:	push	rbp
 				mov		rbp, rsp
-				sub		rsp, 18h
-				push	rdx
+				sub		rsp, 20h
 				test	rdi, rdi					; if (!begin_list)
 				je		_return
 				mov		rdx, [rdi]					; $rdx = *begin_list
 				test	rdx, rdx					; if (!$rdx)
 				je		_return
-				mov		[rbp-10h], rdi				; begin_list
-				mov		[rbp-18h], rsi				; cmp
-loop:			mov		[rbp-8], rdx				; lst = $rdx
-				mov		rax, [rdx + t_list.next]
-				test	rax, rax					; if (lst->next)
+				mov		[rbp-18h], rdi				; begin_list
+				mov		[rbp-20h], rsi				; cmp
+				mov		[rbp-8], rdx				; lst = $rdx
+loop:			test	rdx, rdx
 				je		_return
-				mov		rdi, [rdx + t_list.data]	; $rdi = lst->data
-				mov		rsi, [rdx + t_list.next]	; $rsi = lst->next
+				mov		rcx, [rbp-18h]				; $rcx = begin_list
+				mov		rcx, [rcx]					; $rcx = *rcx
+				mov		[rbp-10h], rcx				; lst2 = $rcx
+sub_loop:		mov		rax, [rcx + t_list.next]	; lst2->next
+				test	rax, rax
+				je		sub_loop_end
+				mov		rdi, [rcx + t_list.data]	; $rdi = lst2->data
+				mov		rsi, [rcx + t_list.next]	; $rsi = lst2->next
 				mov		rsi, [rsi + t_list.data]	; $rsi = $rsi->data
-				mov		rax, [rbp-18h]				; cmp
-				call	rax							; cmp(lst->data, lst->next->data)
+				mov		rax, [rbp-20h]				; cmp
+				call	rax							; cmp(lst2->data, lst2->next->data)
 				cmp		eax, 0
-				jle		find_next
-				mov		rdi, [rbp-8]				; $rdi = lst
-				mov		rsi, [rdi + t_list.next]	; $rsi = lst->next
-				call	swap						; swap(lst, lst->next)
-				mov		rdx, [rbp-10h]				; $rdx = begin_list
-				mov		rdx, [rdx]					; $rdx = *$rdx
-				jmp		loop
-find_next:		mov		rdx, [rbp-8]
+				jle		sub_loop_next
+				mov		rdi, [rbp-10h]				; $rdi = lst2
+				mov		rsi, [rdi + t_list.next]	; $rsi = lst2->next
+				call	swap						; swap(lst2, lst2->next)
+sub_loop_next:	mov		rcx, [rbp-10h]
+				mov		rcx, [rcx + t_list.next]
+				mov		[rbp-10h], rcx
+				jmp		sub_loop
+sub_loop_end:	mov		rdx, [rbp-8]
 				mov		rdx, [rdx + t_list.next]
+				mov		[rbp-8], rdx
 				jmp		loop
-_return:		pop		rdx
-				mov		rsp, rbp
+_return:		mov		rsp, rbp
 				pop		rbp
 				ret
 
