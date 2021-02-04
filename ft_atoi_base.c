@@ -6,11 +6,25 @@
 /*   By: smun <smun@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/03 17:30:35 by smun              #+#    #+#             */
-/*   Updated: 2021/02/04 03:41:19 by smun             ###   ########.fr       */
+/*   Updated: 2021/02/05 00:21:15 by smun             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <libasm_bonus.h>
+
+/*
+**  Could be replaced by `ft_strlen`
+*/
+
+static int		get_strlen(const char *s)
+{
+	int			len;
+
+	len = 0;
+	while (*(s++))
+		len++;
+	return (len);
+}
 
 static char		*ft_memchr(char *s, int chr, int len)
 {
@@ -21,16 +35,6 @@ static char		*ft_memchr(char *s, int chr, int len)
 		s++;
 	}
 	return (0);
-}
-
-static int		get_strlen(const char *s)
-{
-	int			len;
-
-	len = 0;
-	while (*(s++))
-		len++;
-	return (len);
 }
 
 static int		is_valid_base(char *base)

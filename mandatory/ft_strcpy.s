@@ -16,7 +16,7 @@
 ;	char		*ft_strcpy(char *dst, const char *src)
 ;	{
 ;		char	chr;   // al
-;		char	*dest; // [rbp-8]
+;		char	*dest; // rdx
 ;
 ;		dest = dst;
 ;		if (src)
@@ -35,7 +35,7 @@
 ;	char		*ft_strcpy(char *dst, const char *src)
 ;	{
 ;		char	chr;   // al
-;		char	*dest; // [rbp-8]
+;		char	*dest; // rdx
 ;
 ;		dest = dst;
 ;		if (!src)
@@ -51,10 +51,8 @@
 ;	_return:
 ;		return (dest);
 ;	}
-_ft_strcpy:	push	rbp				; stack frame
-			mov		rbp, rsp
-			sub		rsp, 8			; char	*dest;
-			mov		[rbp-8], rdi	; dest = dst;
+_ft_strcpy:	push	rdx				; char	*dest;
+			mov		rdx, rdi		; dest = dst;
 			test	rsi, rsi		; if (!src)
 			je		_return			; goto _return;
 _loop:		mov		al, [rsi]		; chr = *src;
@@ -64,7 +62,6 @@ _loop:		mov		al, [rsi]		; chr = *src;
 			inc		rdi				; dst++;
 			inc		rsi				; src++;
 			jmp		_loop			; goto _loop;
-_return:	mov		rax, [rbp-8]	; return (dest);
-			mov		rsp, rbp
-			pop		rbp				; restore stack frame
+_return:	mov		rax, rdx		; return (dest);
+			pop		rdx
 			ret

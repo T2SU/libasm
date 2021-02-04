@@ -75,7 +75,7 @@
 ;		return (tmp);
 ;	}
 ;
-_ft_strcmp:
+_ft_strcmp:	push	rdx
 loop:		mov		al, [rdi]		; c1 = (unsigned char)*s1;
 			mov		dl, [rsi]		; c2 = (unsigned char)*s2;
 			test	al, al			; if (c1)
@@ -94,4 +94,5 @@ compare:	sub		al, dl			; c1 -= c2;
 pos:		mov		rax, 1			; tmp = 1;
 			jmp		_return			; goto _return;
 neg:		mov		rax, -1			; tmp = -1;
-_return:	ret						; return (tmp);
+_return:	pop		rdx
+			ret						; return (tmp);

@@ -42,7 +42,7 @@
 ;	}
 ;
 _ft_strlen:	push	rcx				; size_t size;
-			mov		rcx, 0			; size = 0;
+			xor		rcx, rcx		; size = 0;
 _loop:		mov		al, [rdi]		; chr = *s;
 			test	al, al			; if (!chr)
 			je		_return			; goto _return;

@@ -17,7 +17,7 @@
 ;	ssize_t		ft_read(int fildes, void *buf, size_t nbyte)
 ;	{
 ;		int		*errptr; // rdi
-;		ssize_t	ret;     // [rbp-8]
+;		ssize_t	ret;     // rdx
 ;
 ;		ret = syscall[0x2000003](fileds, buf, nbyte);
 ;		if ((__rflags & 1) == 0) // syscall was successful?
@@ -29,18 +29,15 @@
 ;		return (ret);
 ;	}
 ;
-_ft_read:	push	rbp
-			mov		rbp, rsp
-			sub		rsp, 8				; ssize_t ret;
+_ft_read:	push	rdx					; ssize_t ret;
 			mov		rax, 0x2000003		; read syscall number: ((2 << 24) | 0x3)
 			syscall
 			jnc		_return				; jmp to _return if carry flag is 0
-			mov		[rbp-8], rax		; ret = $?
+			mov		rdx, rax			; ret = $?
 			call	___error			; __error();
 			mov		rdi, rax			; errptr = $?
-			mov		rax, [rbp-8]
+			mov		rax, rdx
 			mov		dword [rdi], eax	; *errptr = (int)ret;
 			mov		rax, -1				; ret = -1;
-_return:	mov		rsp, rbp
-			pop		rbp
+_return:	pop		rdx
 			ret
