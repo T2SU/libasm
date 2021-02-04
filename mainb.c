@@ -6,7 +6,7 @@
 /*   By: smun <smun@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 00:03:58 by smun              #+#    #+#             */
-/*   Updated: 2021/02/04 19:57:49 by smun             ###   ########.fr       */
+/*   Updated: 2021/02/04 20:43:48 by smun             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,7 @@ static void		ft_list_clear(t_list **begin_list, void(*free_fct)(void *))
 		free_fct(tmp->data);
 		free(tmp);
 	}
+	*begin_list = NULL;
 }
 
 static void		my_free(void *data)
@@ -206,6 +207,44 @@ static void		test_ft_list_push_front(void)
 	GREEN;
 }
 
+static void		do_ft_list_size(const char *t, int (*func_list_size)())
+{
+	char		buf[32];
+	t_list		*lst;
+	int			i;
+
+	lst = NULL;
+	printf("[ %10s ]: count %5d.\x1b[33m", t, func_list_size(lst));
+	printf("\x1b[0m\n");
+	i = 0;
+	while (i < 32768)
+	{
+		sprintf(buf, "lorem-%d", i++);
+		ft_list_push_front_c(&lst, strdup(buf));
+	}
+	printf("[ %10s ]: count %5d.\x1b[33m", t, func_list_size(lst));
+	printf("\x1b[0m\n");
+	ft_list_clear(&lst, &free);
+	printf("[ %10s ]: count %5d.\x1b[33m", t, func_list_size(lst));
+	printf("\x1b[0m\n");
+}
+
+static void		test_ft_list_size(void)
+{
+	GREEN;
+	printf("To display a C Piscine's function's result, Press an enter key!");
+	getchar();
+	GRAY;
+	do_ft_list_size("c piscine", &ft_list_size_c);
+	GREEN;
+
+	printf("To test LIBASM's function, Press an enter key!");
+	getchar();
+	GRAY;
+	do_ft_list_size("libasm", &ft_list_size);
+	GREEN;
+}
+
 int				main(void)
 {
 	char		input[16];
@@ -218,6 +257,7 @@ int				main(void)
 		WHITE;
 		ft_write(1, " 1:  ft_atoi_base\n", 18);
 		ft_write(1, " 2:  ft_list_push_front\n", 24);
+		ft_write(1, " 3:  ft_list_size\n", 18);
 		ft_write(1, " 5:  ft_list_remove_if\n", 23);
 		ft_write(1, "\n", 1);
 		YELLOW;
@@ -234,6 +274,8 @@ int				main(void)
 			test_ft_atoi_base();
 		else if (!ft_strcmp(input, "2"))
 			test_ft_list_push_front();
+		else if (!ft_strcmp(input, "3"))
+			test_ft_list_size();
 		else if (!ft_strcmp(input, "5"))
 			test_ft_list_remove_if();
 	}
