@@ -36,5 +36,3 @@ _ft_list_push_front:	push	rbp
 _return:				mov		rsp, rbp
 						pop		rbp
 						ret
-
-
