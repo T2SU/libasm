@@ -3,6 +3,11 @@
 ;    Created by smun<smun@student.42seoul.kr>
 ;
 
+						struc	t_list
+							.data	resq 1
+							.next	resq 1
+						endstruc
+
 						global	_ft_list_remove_if
 						extern	_free
 						section	.text
@@ -23,44 +28,44 @@ _ft_list_remove_if:		push	rbp
 						mov		rax, [rdi]
 						test	rax, rax
 						je		_return
-						mov		qword [rbp-8], 0	; prev = NULL
-						mov		[rbp-18h], rax		; lst = *begin_list
-						mov		[rbp-20h], rdi		; begin_list
-						mov		[rbp-28h], rsi		; data_ref
-						mov		[rbp-30h], rdx		; cmp
-						mov		[rbp-38h], rcx		; free_fct
-loop:					test	rax, rax			; if (lst)
+						mov		qword [rbp-8], 0			; prev = NULL
+						mov		[rbp-18h], rax				; lst = *begin_list
+						mov		[rbp-20h], rdi				; begin_list
+						mov		[rbp-28h], rsi				; data_ref
+						mov		[rbp-30h], rdx				; cmp
+						mov		[rbp-38h], rcx				; free_fct
+loop:					test	rax, rax					; if (lst)
 						je		_return
-						mov		rdi, [rax + 0]		; lst->data
-						mov		rsi, [rbp-28h]		; data_ref
+						mov		rdi, [rax + t_list.data]	; lst->data
+						mov		rsi, [rbp-28h]				; data_ref
 						mov		rdx, [rbp-30h]
-						call	rdx					; cmp(lst->data, data_ref)
+						call	rdx							; cmp(lst->data, data_ref)
 						test	rax, rax
 						jne		cmp_not_equal
-cmp_equal:				mov		rdx, [rbp-18h]		; rdx = lst
-						mov		rdx, [rdx + 8]		; rdx = lst->next
-						mov		rax, [rbp-8]		; rax = prev
+cmp_equal:				mov		rdx, [rbp-18h]				; rdx = lst
+						mov		rdx, [rdx + t_list.next]	; rdx = lst->next
+						mov		rax, [rbp-8]				; rax = prev
 						test	rax, rax
 						je		prev_is_null
-						mov		[rax + 8], rdx		; prev->next = rdx (lst->next)
+						mov		[rax + t_list.next], rdx	; prev->next = rdx (lst->next)
 						jmp		do_free
-prev_is_null:			mov		rax, [rbp-20h]		; rax = begin_list
-						mov		[rax], rdx			; *begin_list = rdx (lst->next)
-do_free:				mov		rax, [rbp-18h]		; rax = lst
-						mov		[rbp-10h], rax		; tmp = rax (lst)
-						mov		rdx, [rax + 8]		; rdx = tmp->next
-						mov		[rbp-18h], rdx		; lst = lst->next
-						mov		rax, [rax + 0]		; rax = tmp->data
+prev_is_null:			mov		rax, [rbp-20h]				; rax = begin_list
+						mov		[rax], rdx					; *begin_list = rdx (lst->next)
+do_free:				mov		rax, [rbp-18h]				; rax = lst
+						mov		[rbp-10h], rax				; tmp = rax (lst)
+						mov		rdx, [rax + t_list.next]	; rdx = tmp->next
+						mov		[rbp-18h], rdx				; lst = lst->next
+						mov		rax, [rax + t_list.data]	; rax = tmp->data
 						mov		rdi, rax
 						mov		rdx, [rbp-38h]
-						call	rdx					; free_fct(tmp->data)
-						mov		rdi, [rbp-10h]		; tmp
-						call	_free				; free(tmp)
+						call	rdx							; free_fct(tmp->data)
+						mov		rdi, [rbp-10h]				; tmp
+						call	_free						; free(tmp)
 						mov		rax, [rbp-18h]
 						jmp		loop
 cmp_not_equal:			mov		rax, [rbp-18h]
-						mov		[rbp-8], rax		; prev = lst
-						mov		rax, [rax + 8]		; lst = lst->next
+						mov		[rbp-8], rax				; prev = lst
+						mov		rax, [rax + t_list.next]	; lst = lst->next
 						mov		[rbp-18h], rax
 						jmp		loop
 _return:				mov		rsp, rbp

@@ -6,7 +6,7 @@
 /*   By: smun <smun@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 00:03:58 by smun              #+#    #+#             */
-/*   Updated: 2021/02/04 19:01:40 by smun             ###   ########.fr       */
+/*   Updated: 2021/02/04 19:51:59 by smun             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -200,21 +200,21 @@ int				main(void)
 	char		input[16];
 	ssize_t		r;
 
-	GREEN;
-	ft_write(1, "==== Test List ====\n", 20);
-	WHITE;
-	ft_write(1, " 1:  ft_strlen\n", 15);
-	ft_write(1, " 2:  ft_strcpy\n", 15);
-	ft_write(1, " 3:  ft_strcmp\n", 15);
-	ft_write(1, " 4:  ft_write, ft_read\n", 23);
-	ft_write(1, " 5:  ft_write, ft_read exception\n", 33);
-	ft_write(1, " 6:  ft_strdup\n", 15);
-	ft_write(1, "\n", 1);
-	YELLOW;
-	ft_write(1, " X:  Quit\n", 10);
-	GRAY;
 	while (1)
 	{
+		GREEN;
+		ft_write(1, "==== Test List ====\n", 20);
+		WHITE;
+		ft_write(1, " 1:  ft_strlen\n", 15);
+		ft_write(1, " 2:  ft_strcpy\n", 15);
+		ft_write(1, " 3:  ft_strcmp\n", 15);
+		ft_write(1, " 4:  ft_write, ft_read\n", 23);
+		ft_write(1, " 5:  ft_write, ft_read exception\n", 33);
+		ft_write(1, " 6:  ft_strdup\n", 15);
+		ft_write(1, "\n", 1);
+		YELLOW;
+		ft_write(1, " X:  Quit\n", 10);
+		GRAY;
 		ft_write(1, "Select a new test: ", 19);
 		r = ft_read(STDIN_FILENO, input, 16);
 		if (r <= 0)

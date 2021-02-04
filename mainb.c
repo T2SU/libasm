@@ -6,7 +6,7 @@
 /*   By: smun <smun@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 00:03:58 by smun              #+#    #+#             */
-/*   Updated: 2021/02/04 19:00:50 by smun             ###   ########.fr       */
+/*   Updated: 2021/02/04 19:57:49 by smun             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,23 @@ static void		test_ft_atoi_base(void)
 	do_test_ft_atoi_base("            +----8----++-1235aaa7766", "a123567");
 }
 
+static void		print_list(t_list *lst, const char *t, const char *find)
+{
+	int			i;
+	int			loremcnt;
+
+	i = 0;
+	loremcnt = 0;
+	while (lst)
+	{
+		printf("[ %10s %3d. ]: %-12s\x1b[33m", t, ++i, (const char*)lst->data);
+		if (find && !strcmp(lst->data, find))
+			printf(" (Found %d %s)", ++loremcnt, find);
+		printf("\x1b[0m\n");
+		lst = lst->next;
+	}
+}
+
 static void		ft_list_clear(t_list **begin_list, void(*free_fct)(void *))
 {
 	t_list		*tmp;
@@ -80,7 +97,7 @@ static void		ft_list_clear(t_list **begin_list, void(*free_fct)(void *))
 
 static void		my_free(void *data)
 {
-	printf("Freed: %s\n", (const char*)data);
+	printf("t_list elem freed successfully: %s\n", (const char*)data);
 	free(data);
 }
 
@@ -100,10 +117,12 @@ static void		prepare_test_ft_list_remove_if(t_list **lst)
 	ft_list_push_front_c(lst, strdup("Lorem"));
 	ft_list_push_front_c(lst, strdup("elit"));
 	ft_list_push_front_c(lst, strdup("Aliquam"));
+	ft_list_push_front_c(lst, strdup(""));
 	ft_list_push_front_c(lst, strdup("Lorem"));
 	ft_list_push_front_c(lst, strdup("lacinia"));
 	ft_list_push_front_c(lst, strdup("massa"));
 	ft_list_push_front_c(lst, strdup("Lorem"));
+	ft_list_push_front_c(lst, strdup(""));
 	ft_list_push_front_c(lst, strdup("dapibus"));
 	ft_list_push_front_c(lst, strdup("Lorem"));
 	ft_list_push_front_c(lst, strdup("porta"));
@@ -116,33 +135,14 @@ static void		prepare_test_ft_list_remove_if(t_list **lst)
 
 static void		do_ft_list_remove_if(const char *t, void (*func_remove_if)())
 {
-	t_list		*begin_lst;
 	t_list		*lst;
-	int			i;
-	int			loremcnt;
 
-	prepare_test_ft_list_remove_if(&begin_lst);
-	lst = begin_lst;
-	i = 0;
-	loremcnt = 0;
-	while (lst)
-	{
-		printf("[ ( %10s)%3d. ]: %-12s\x1b[33m", t, ++i, (const char*)lst->data);
-		if (!strcmp(lst->data, "Lorem"))
-			printf(" (Found %d Lorem)", ++loremcnt);
-		printf("\x1b[0m\n");
-		lst = lst->next;
-	}
+	prepare_test_ft_list_remove_if(&lst);
+	print_list(lst, t, "Lorem");
 	printf("-------------------------------\n");
-	func_remove_if(&begin_lst, "Lorem", &strcmp, &my_free);
-	lst = begin_lst;
-	i = 0;
-	while (lst)
-	{
-		printf("[ ( %10s)%3d. ]: %-12s\n", t, ++i, (const char*)lst->data);
-		lst = lst->next;
-	}
-	ft_list_clear(&begin_lst, &free);
+	func_remove_if(&lst, "Lorem", &strcmp, &my_free);
+	print_list(lst, t, "Lorem");
+	ft_list_clear(&lst, &free);
 }
 
 static void		test_ft_list_remove_if(void)
@@ -172,22 +172,57 @@ static void		test_ft_list_remove_if(void)
 	GREEN;
 }
 
+static void		do_ft_list_push_front(const char *t, void (*func_push_front)())
+{
+	t_list		*lst;
+
+	lst = NULL;
+	func_push_front(&lst, strdup(""));
+	func_push_front(&lst, strdup("lorem"));
+	func_push_front(&lst, strdup("ipsum"));
+	func_push_front(&lst, strdup("dolor"));
+	func_push_front(&lst, strdup("sit"));
+	func_push_front(&lst, strdup("amet"));
+	func_push_front(&lst, strdup(""));
+	func_push_front(&lst, strdup(""));
+	func_push_front(&lst, strdup(""));
+	print_list(lst, t, NULL);
+	ft_list_clear(&lst, &my_free);
+}
+
+static void		test_ft_list_push_front(void)
+{
+	GREEN;
+	printf("To display a C Piscine's function's result, Press an enter key!");
+	getchar();
+	GRAY;
+	do_ft_list_push_front("c piscine", &ft_list_push_front_c);
+	GREEN;
+
+	printf("To test LIBASM's function, Press an enter key!");
+	getchar();
+	GRAY;
+	do_ft_list_push_front("libasm", &ft_list_push_front);
+	GREEN;
+}
+
 int				main(void)
 {
 	char		input[16];
 	ssize_t		r;
 
-	GREEN;
-	ft_write(1, "==== Test List ====\n", 20);
-	WHITE;
-	ft_write(1, " 1:  ft_atoi_base\n", 18);
-	ft_write(1, " 2:  ft_list_remove_if\n", 23);
-	ft_write(1, "\n", 1);
-	YELLOW;
-	ft_write(1, " X:  Quit\n", 10);
-	GRAY;
 	while (1)
 	{
+		GREEN;
+		ft_write(1, "==== Test List ====\n", 20);
+		WHITE;
+		ft_write(1, " 1:  ft_atoi_base\n", 18);
+		ft_write(1, " 2:  ft_list_push_front\n", 24);
+		ft_write(1, " 5:  ft_list_remove_if\n", 23);
+		ft_write(1, "\n", 1);
+		YELLOW;
+		ft_write(1, " X:  Quit\n", 10);
+		GRAY;
 		ft_write(1, "Select a new test: ", 19);
 		r = ft_read(STDIN_FILENO, input, 16);
 		if (r <= 0)
@@ -198,6 +233,8 @@ int				main(void)
 		else if (!ft_strcmp(input, "1"))
 			test_ft_atoi_base();
 		else if (!ft_strcmp(input, "2"))
+			test_ft_list_push_front();
+		else if (!ft_strcmp(input, "5"))
 			test_ft_list_remove_if();
 	}
 	ft_write(1, "Bye~\n", 5);
