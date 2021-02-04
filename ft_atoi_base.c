@@ -6,7 +6,7 @@
 /*   By: smun <smun@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/03 17:30:35 by smun              #+#    #+#             */
-/*   Updated: 2021/02/05 00:21:15 by smun             ###   ########.fr       */
+/*   Updated: 2021/02/05 00:47:29 by smun             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,10 @@ static int		is_valid_base(char *base)
 	{
 		if (ft_memchr("+-", base[i], 2))
 			return (0);
+		if (ft_memchr("\t\n\v\f\r ", base[i], 6))
+			return (0);
 		if (i > 0)
-			if (ft_memchr(base, base[i], i - 1))
+			if (ft_memchr(&base[0], base[i], i))
 				return (0);
 		i++;
 	}

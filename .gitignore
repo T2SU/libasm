@@ -6,3 +6,4 @@ lorem_copy*
 *.dSYM
 main
 mainb
+libasm_test/

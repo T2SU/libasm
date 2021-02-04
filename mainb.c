@@ -6,7 +6,7 @@
 /*   By: smun <smun@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 00:03:58 by smun              #+#    #+#             */
-/*   Updated: 2021/02/04 22:39:47 by smun             ###   ########.fr       */
+/*   Updated: 2021/02/05 00:41:33 by smun             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,10 @@ static void		do_test_ft_atoi_base(char *str, char *base)
 
 static void		test_ft_atoi_base(void)
 {
+	do_test_ft_atoi_base("10", "011");
+	do_test_ft_atoi_base("10111", "\t541");
+	do_test_ft_atoi_base("10111", "98\n541");
+	do_test_ft_atoi_base("10111", "54 1");
 	do_test_ft_atoi_base("1234567890", "0123456789");
 	do_test_ft_atoi_base("10000000000000000", "01");
 	do_test_ft_atoi_base("5F5E100", "0123456789ABCDEF");

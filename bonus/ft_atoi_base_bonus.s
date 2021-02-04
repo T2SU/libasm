@@ -49,14 +49,21 @@ is_valid_base_loop:		cmp		rcx, [rbp-8]		; i < len
 						call	_ft_memchr			; ft_memchr("+-", *(base + i), 2)
 						test	rax, rax
 						jne		is_valid_base_error
+						lea		rdi, [rel s_space]
+						mov		rsi, [rbp-10h]
+						lea		rsi, [rsi + rcx]
+						movzx	rsi, byte [rsi]
+						mov		rdx, 6
+						call	_ft_memchr			; ft_memchr("\t\n\v\f\r ", *(base + i), 6)
+						test	rax, rax
+						jne		is_valid_base_error
 						cmp		rcx, 1				; i > 0
 						jle		is_valid_base_next
 						mov		rdi, [rbp-10h]
 						lea		rsi, [rdi + rcx]
 						movzx	rsi, byte [rsi]
 						mov		rdx, rcx
-						dec		rdx
-						call	_ft_memchr			; ft_memchr(base, *(base + i), i - 1)
+						call	_ft_memchr			; ft_memchr(base, *(base + i), i)
 						test	rax, rax
 						jne		is_valid_base_error
 is_valid_base_next:		inc		rcx					; i++
