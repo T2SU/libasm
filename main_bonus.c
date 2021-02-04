@@ -6,7 +6,7 @@
 /*   By: smun <smun@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 00:03:58 by smun              #+#    #+#             */
-/*   Updated: 2021/02/05 01:52:09 by smun             ###   ########.fr       */
+/*   Updated: 2021/02/05 02:56:44 by smun             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,172 @@
 #define YELLOW	write(1, "\x1b[33m", 5)
 #define GREEN	write(1, "\x1b[32m", 5)
 #define WHITE	write(1, "\x1b[37m", 5)
+
+static int		ft_strlen_c(const char *s)
+{
+	int			len;
+
+	len = 0;
+	while (*(s++))
+		len++;
+	return (len);
+}
+
+static char		*ft_memchr_c(char *s, int chr, int len)
+{
+	while (*s && len--)
+	{
+		if (*s == chr)
+			return (s);
+		s++;
+	}
+	return (0);
+}
+
+static int		is_valid_base_c(char *base)
+{
+	int			len;
+	int			i;
+
+	len = ft_strlen_c(base);
+	if (len <= 1)
+		return (0);
+	i = 0;
+	while (i < len)
+	{
+		if (ft_memchr_c("+-", base[i], 2))
+			return (0);
+		if (ft_memchr_c("\t\n\v\f\r ", base[i], 6))
+			return (0);
+		if (i > 0)
+			if (ft_memchr_c(&base[0], base[i], i))
+				return (0);
+		i++;
+	}
+	return (1);
+}
+
+static int		cvt_by_base_c(char *str, char *base, int blen)
+{
+	int			nbr;
+	char		*pos;
+	int			i;
+
+	nbr = 0;
+	while (*str)
+	{
+		pos = ft_memchr_c(base, *str, blen);
+		if (!pos)
+			break ;
+		i = (int)(pos - base);
+		nbr = nbr * blen + i;
+		str++;
+	}
+	return (nbr);
+}
+
+
+void		ft_list_push_front_c(t_list **begin_list, void *data)
+{
+	t_list	*lst;
+
+	if (!begin_list)
+		return ;
+	if (!(lst = malloc(sizeof(t_list))))
+		return ;
+	lst->data = data;
+	lst->next = *begin_list;
+	*begin_list = lst;
+}
+
+int			ft_list_size_c(t_list *begin_list)
+{
+	int		i;
+
+	i = 0;
+	while (begin_list)
+	{
+		i++;
+		begin_list = begin_list->next;
+	}
+	return (i);
+}
+
+static void	swap_c(t_list *a, t_list *b)
+{
+	void	*data;
+
+	data = a->data;
+	a->data = b->data;
+	b->data = data;
+}
+
+void		ft_list_sort_c(t_list **begin_list, int (*cmp)())
+{
+	t_list	*lst;
+	t_list	*lst2;
+
+	if (begin_list == NULL || !(lst = *begin_list))
+		return ;
+	while (lst)
+	{
+		lst2 = *begin_list;
+		while (lst2->next)
+		{
+			if (cmp(lst2->data, lst2->next->data) > 0)
+				swap_c(lst2, lst2->next);
+			lst2 = lst2->next;
+		}
+		lst = lst->next;
+	}
+}
+
+void		ft_list_remove_if_c(t_list **begin_list, void *data_ref, int (*cmp)(), void (*free_fct)(void *))
+{
+	t_list	*prev;
+	t_list	*lst;
+	t_list	*tmp;
+
+	if (begin_list == NULL || !(lst = *begin_list))
+		return ;
+	prev = NULL;
+	while (lst)
+	{
+		if (!cmp(lst->data, data_ref))
+		{
+			if (prev)
+				prev->next = lst->next;
+			else
+				*begin_list = lst->next;
+			tmp = lst;
+			lst = lst->next;
+			free_fct(tmp->data);
+			free(tmp);
+		}
+		else
+		{
+			prev = lst;
+			lst = lst->next;
+		}
+	}
+}
+
+int				ft_atoi_base_c(char *str, char *base)
+{
+	int			blen;
+	int			neg;
+
+	if (!is_valid_base_c(base))
+		return (0);
+	while (ft_memchr_c("\t\n\v\f\r ", *str, 6))
+		str++;
+	neg = 1;
+	while (*str == '-' || *str == '+')
+		if (*(str++) == '-')
+			neg = -neg;
+	blen = ft_strlen_c(base);
+	return ((cvt_by_base_c(str, base, blen)) * neg);
+}
 
 static void		do_test_ft_atoi_base(char *str, char *base)
 {

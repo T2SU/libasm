@@ -6,7 +6,7 @@
 #    By: smun <smun@student.42seoul.kr>             +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/02/02 16:51:52 by smun              #+#    #+#              #
-#    Updated: 2021/02/05 01:20:22 by smun             ###   ########.fr        #
+#    Updated: 2021/02/05 02:57:27 by smun             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -44,7 +44,7 @@ BOBJ = $(B_SRC:.s=.o)
 
 MAIN_SRC = main.c
 MAIN_OBJ = $(MAIN_SRC:.c=.o)
-MAINB_SRC = main_bonus.c ft_atoi_base.c ft_list.c
+MAINB_SRC = main_bonus.c
 MAINB_OBJ = $(MAINB_SRC:.c=.o)
 
 all : $(NAME)
