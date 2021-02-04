@@ -6,7 +6,7 @@
 /*   By: smun <smun@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 00:03:58 by smun              #+#    #+#             */
-/*   Updated: 2021/02/04 20:43:48 by smun             ###   ########.fr       */
+/*   Updated: 2021/02/04 21:43:00 by smun             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,43 +102,38 @@ static void		my_free(void *data)
 	free(data);
 }
 
-static void		prepare_test_ft_list_remove_if(t_list **lst)
-{
-	*lst = NULL;
-	ft_list_push_front_c(lst, strdup("Lorem"));
-	ft_list_push_front_c(lst, strdup("lorem"));
-	ft_list_push_front_c(lst, strdup("ipsum"));
-	ft_list_push_front_c(lst, strdup("Lorem"));
-	ft_list_push_front_c(lst, strdup("dolor"));
-	ft_list_push_front_c(lst, strdup("sit"));
-	ft_list_push_front_c(lst, strdup("amet"));
-	ft_list_push_front_c(lst, strdup("Lorem"));
-	ft_list_push_front_c(lst, strdup("consectetur"));
-	ft_list_push_front_c(lst, strdup("adipiscing"));
-	ft_list_push_front_c(lst, strdup("Lorem"));
-	ft_list_push_front_c(lst, strdup("elit"));
-	ft_list_push_front_c(lst, strdup("Aliquam"));
-	ft_list_push_front_c(lst, strdup(""));
-	ft_list_push_front_c(lst, strdup("Lorem"));
-	ft_list_push_front_c(lst, strdup("lacinia"));
-	ft_list_push_front_c(lst, strdup("massa"));
-	ft_list_push_front_c(lst, strdup("Lorem"));
-	ft_list_push_front_c(lst, strdup(""));
-	ft_list_push_front_c(lst, strdup("dapibus"));
-	ft_list_push_front_c(lst, strdup("Lorem"));
-	ft_list_push_front_c(lst, strdup("porta"));
-	ft_list_push_front_c(lst, strdup("erat"));
-	ft_list_push_front_c(lst, strdup("sit"));
-	ft_list_push_front_c(lst, strdup("Lorem"));
-	ft_list_push_front_c(lst, strdup("Lorem"));
-	ft_list_push_front_c(lst, strdup("Lorem"));
-}
-
 static void		do_ft_list_remove_if(const char *t, void (*func_remove_if)())
 {
 	t_list		*lst;
 
-	prepare_test_ft_list_remove_if(&lst);
+	lst = NULL;
+	ft_list_push_front_c(&lst, strdup("Lorem"));
+	ft_list_push_front_c(&lst, strdup("lorem"));
+	ft_list_push_front_c(&lst, strdup("ipsum"));
+	ft_list_push_front_c(&lst, strdup("Lorem"));
+	ft_list_push_front_c(&lst, strdup("dolor"));
+	ft_list_push_front_c(&lst, strdup("sit"));
+	ft_list_push_front_c(&lst, strdup("amet"));
+	ft_list_push_front_c(&lst, strdup("Lorem"));
+	ft_list_push_front_c(&lst, strdup("consectetur"));
+	ft_list_push_front_c(&lst, strdup("adipiscing"));
+	ft_list_push_front_c(&lst, strdup("Lorem"));
+	ft_list_push_front_c(&lst, strdup("elit"));
+	ft_list_push_front_c(&lst, strdup("Aliquam"));
+	ft_list_push_front_c(&lst, strdup(""));
+	ft_list_push_front_c(&lst, strdup("Lorem"));
+	ft_list_push_front_c(&lst, strdup("lacinia"));
+	ft_list_push_front_c(&lst, strdup("massa"));
+	ft_list_push_front_c(&lst, strdup("Lorem"));
+	ft_list_push_front_c(&lst, strdup(""));
+	ft_list_push_front_c(&lst, strdup("dapibus"));
+	ft_list_push_front_c(&lst, strdup("Lorem"));
+	ft_list_push_front_c(&lst, strdup("porta"));
+	ft_list_push_front_c(&lst, strdup("erat"));
+	ft_list_push_front_c(&lst, strdup("sit"));
+	ft_list_push_front_c(&lst, strdup("Lorem"));
+	ft_list_push_front_c(&lst, strdup("Lorem"));
+	ft_list_push_front_c(&lst, strdup("Lorem"));
 	print_list(lst, t, "Lorem");
 	printf("-------------------------------\n");
 	func_remove_if(&lst, "Lorem", &strcmp, &my_free);
@@ -245,6 +240,63 @@ static void		test_ft_list_size(void)
 	GREEN;
 }
 
+static void		do_ft_list_sort(const char *t, void (*func_list_sort)(), int (*cmp)())
+{
+	t_list		*lst;
+
+	lst = NULL;
+	ft_list_push_front_c(&lst, strdup("rXGUhQt"));
+	ft_list_push_front_c(&lst, strdup("VihSZbMNyY"));
+	ft_list_push_front_c(&lst, strdup("aMoCh29W8B"));
+	ft_list_push_front_c(&lst, strdup("h6kV4"));
+	ft_list_push_front_c(&lst, strdup("R"));
+	ft_list_push_front_c(&lst, strdup("GiJl9"));
+	ft_list_push_front_c(&lst, strdup("sMCryRJPSOu6"));
+	ft_list_push_front_c(&lst, strdup("FNb1"));
+	ft_list_push_front_c(&lst, strdup("oU"));
+	ft_list_push_front_c(&lst, strdup("oE"));
+	ft_list_push_front_c(&lst, strdup("d"));
+	ft_list_push_front_c(&lst, strdup("A"));
+	ft_list_push_front_c(&lst, strdup("PM"));
+	ft_list_push_front_c(&lst, strdup("NDmFi"));
+	ft_list_push_front_c(&lst, strdup("JtDHW"));
+	ft_list_push_front_c(&lst, strdup("B1JKR"));
+	ft_list_push_front_c(&lst, strdup("GTIurC0teHoJ"));
+	ft_list_push_front_c(&lst, strdup("VE"));
+	ft_list_push_front_c(&lst, strdup("N4ZS"));
+	func_list_sort(&lst, cmp);
+	print_list(lst, t, NULL);
+	ft_list_clear(&lst, &free);
+}
+
+static int		r_strcmp(char *s1, char *s2)
+{
+	return strcmp(s1, s2);
+}
+
+static int		compare_len(char *s1, char *s2)
+{
+	return strlen(s1) - strlen(s2);
+}
+
+static void		test_ft_list_sort(void)
+{
+	GREEN;
+	printf("To display a C Piscine's function's result, Press an enter key!");
+	getchar();
+	GRAY;
+	do_ft_list_sort("c piscine", &ft_list_sort_c, &r_strcmp);
+	do_ft_list_sort("c piscine", &ft_list_sort_c, &compare_len);
+	GREEN;
+
+	printf("To test LIBASM's function, Press an enter key!");
+	getchar();
+	GRAY;
+	do_ft_list_sort("libasm", &ft_list_sort, &r_strcmp);
+	do_ft_list_sort("libasm", &ft_list_sort, &compare_len);
+	GREEN;
+}
+
 int				main(void)
 {
 	char		input[16];
@@ -258,6 +310,7 @@ int				main(void)
 		ft_write(1, " 1:  ft_atoi_base\n", 18);
 		ft_write(1, " 2:  ft_list_push_front\n", 24);
 		ft_write(1, " 3:  ft_list_size\n", 18);
+		ft_write(1, " 4:  ft_list_sort\n", 18);
 		ft_write(1, " 5:  ft_list_remove_if\n", 23);
 		ft_write(1, "\n", 1);
 		YELLOW;
@@ -276,6 +329,8 @@ int				main(void)
 			test_ft_list_push_front();
 		else if (!ft_strcmp(input, "3"))
 			test_ft_list_size();
+		else if (!ft_strcmp(input, "4"))
+			test_ft_list_sort();
 		else if (!ft_strcmp(input, "5"))
 			test_ft_list_remove_if();
 	}

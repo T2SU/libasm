@@ -9,7 +9,6 @@
 						endstruc
 
 						global	_ft_list_size
-						extern	_malloc
 						section	.text
 ;	int			ft_list_size(t_list *begin_list)
 ;		long	i;		// rax

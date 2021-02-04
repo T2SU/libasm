@@ -6,7 +6,7 @@
 #    By: smun <smun@student.42seoul.kr>             +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/02/02 16:51:52 by smun              #+#    #+#              #
-#    Updated: 2021/02/04 20:29:57 by smun             ###   ########.fr        #
+#    Updated: 2021/02/04 21:35:40 by smun             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,7 +37,8 @@ B_DIR = ./bonus/
 B = ft_atoi_base \
 	ft_list_remove_if \
 	ft_list_push_front \
-	ft_list_size
+	ft_list_size \
+	ft_list_sort
 B_SRC = $(M_SRC) $(addprefix $(B_DIR), $(addsuffix _bonus.s, $(B)))
 BOBJ = $(B_SRC:.s=.o)
 
