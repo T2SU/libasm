@@ -6,7 +6,7 @@
 /*   By: smun <smun@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 00:03:58 by smun              #+#    #+#             */
-/*   Updated: 2021/02/05 01:20:10 by smun             ###   ########.fr       */
+/*   Updated: 2021/02/05 01:52:09 by smun             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -266,6 +266,10 @@ static void		do_ft_list_sort(const char *t, void (*func_list_sort)(), int (*cmp)
 	ft_list_push_front_c(&lst, strdup("R"));
 	ft_list_push_front_c(&lst, strdup("h6kV4"));
 	ft_list_push_front_c(&lst, strdup("aMoCh29W8B"));
+	ft_list_push_front_c(&lst, strdup(""));
+	ft_list_push_front_c(&lst, strdup(" "));
+	ft_list_push_front_c(&lst, strdup("  "));
+	ft_list_push_front_c(&lst, strdup(""));
 	ft_list_push_front_c(&lst, strdup("VihSZbMNyY"));
 	ft_list_push_front_c(&lst, strdup("rXGUhQt"));
 	func_list_sort(&lst, cmp);
