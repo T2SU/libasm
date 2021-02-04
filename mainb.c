@@ -6,7 +6,7 @@
 /*   By: smun <smun@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 00:03:58 by smun              #+#    #+#             */
-/*   Updated: 2021/02/04 21:43:00 by smun             ###   ########.fr       */
+/*   Updated: 2021/02/04 22:39:47 by smun             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -245,25 +245,25 @@ static void		do_ft_list_sort(const char *t, void (*func_list_sort)(), int (*cmp)
 	t_list		*lst;
 
 	lst = NULL;
-	ft_list_push_front_c(&lst, strdup("rXGUhQt"));
-	ft_list_push_front_c(&lst, strdup("VihSZbMNyY"));
-	ft_list_push_front_c(&lst, strdup("aMoCh29W8B"));
-	ft_list_push_front_c(&lst, strdup("h6kV4"));
-	ft_list_push_front_c(&lst, strdup("R"));
-	ft_list_push_front_c(&lst, strdup("GiJl9"));
-	ft_list_push_front_c(&lst, strdup("sMCryRJPSOu6"));
-	ft_list_push_front_c(&lst, strdup("FNb1"));
-	ft_list_push_front_c(&lst, strdup("oU"));
-	ft_list_push_front_c(&lst, strdup("oE"));
-	ft_list_push_front_c(&lst, strdup("d"));
-	ft_list_push_front_c(&lst, strdup("A"));
-	ft_list_push_front_c(&lst, strdup("PM"));
-	ft_list_push_front_c(&lst, strdup("NDmFi"));
-	ft_list_push_front_c(&lst, strdup("JtDHW"));
-	ft_list_push_front_c(&lst, strdup("B1JKR"));
-	ft_list_push_front_c(&lst, strdup("GTIurC0teHoJ"));
-	ft_list_push_front_c(&lst, strdup("VE"));
 	ft_list_push_front_c(&lst, strdup("N4ZS"));
+	ft_list_push_front_c(&lst, strdup("VE"));
+	ft_list_push_front_c(&lst, strdup("GTIurC0teHoJ"));
+	ft_list_push_front_c(&lst, strdup("B1JKR"));
+	ft_list_push_front_c(&lst, strdup("JtDHW"));
+	ft_list_push_front_c(&lst, strdup("NDmFi"));
+	ft_list_push_front_c(&lst, strdup("PM"));
+	ft_list_push_front_c(&lst, strdup("A"));
+	ft_list_push_front_c(&lst, strdup("d"));
+	ft_list_push_front_c(&lst, strdup("oE"));
+	ft_list_push_front_c(&lst, strdup("oU"));
+	ft_list_push_front_c(&lst, strdup("FNb1"));
+	ft_list_push_front_c(&lst, strdup("sMCryRJPSOu6"));
+	ft_list_push_front_c(&lst, strdup("GiJl9"));
+	ft_list_push_front_c(&lst, strdup("R"));
+	ft_list_push_front_c(&lst, strdup("h6kV4"));
+	ft_list_push_front_c(&lst, strdup("aMoCh29W8B"));
+	ft_list_push_front_c(&lst, strdup("VihSZbMNyY"));
+	ft_list_push_front_c(&lst, strdup("rXGUhQt"));
 	func_list_sort(&lst, cmp);
 	print_list(lst, t, NULL);
 	ft_list_clear(&lst, &free);

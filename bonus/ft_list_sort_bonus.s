@@ -11,85 +11,40 @@
 				global	_ft_list_sort
 				section	.text
 ;	void		ft_list_sort(t_list **_begin_list, int (*_cmp)())
-;		t_list	*main;			// [rbp-8]
-;		t_list	*sub;			// [rbp-10h]
-;		t_list	**begin_list;	// [rbp-18h]
-;		void	*cmp;			// [rbp-20h]
-;		dummy					// [rbp-28h] (for stack 16 bytes aligned)
-;
-;	if (!_begin_list)
-;		goto _return;
-;	$rdx = *_begin_list;
-;	if (!$rdx)
-;		goto _return;
-;	begin_list = _begin_list;
-;	cmp = _cmp;
-;	main = $rdx;
-;loop:
-;	$rdx = $rdx->next;
-;	if (!$rdx)
-;		goto _return;
-;	$rax = *begin_list;
-;	sub = $rax;
-;sub_loop:
-;	$rsi = main;
-;	if ($rax == $rsi)
-;		goto end_sub_loop;
-;	$rdi = $rax->data;
-;	$rsi = $rax->next->data;
-;	$rax = cmp($rdi, $rsi);
-;	if ($rax <= 0)
-;		goto end_swap;
-;	swap(sub, sub->next);
-;end_swap:
-;	$rax = sub->next;
-;	sub = $rax;
-;	goto sub_loop;
-;end_sub_loop:
-;	$rax = main->next;
-;	main = $rax;
-;	goto loop;
-;_return:
-;	return ;
+;		t_list	*lst;			// [rbp-8]
+;		t_list	**begin_list;	// [rbp-10h]
+;		void	*cmp;			// [rbp-18h]
 ;
 _ft_list_sort:	push	rbp
 				mov		rbp, rsp
-				sub		rsp, 28h
+				sub		rsp, 18h
 				push	rdx
 				test	rdi, rdi					; if (!begin_list)
 				je		_return
-				mov		rdx, [rdi]
-				test	rdx, rdx					; if (!(*begin_list))
+				mov		rdx, [rdi]					; $rdx = *begin_list
+				test	rdx, rdx					; if (!$rdx)
 				je		_return
-				mov		[rbp-18h], rdi				; begin_list
-				mov		[rbp-20h], rsi				; cmp
-				mov		[rbp-8], rdx				; main = *begin_list
-loop:			mov		rdx, [rdx + t_list.next]
-				test	rdx, rdx					; if (main->next)
+				mov		[rbp-10h], rdi				; begin_list
+				mov		[rbp-18h], rsi				; cmp
+loop:			mov		[rbp-8], rdx				; lst = $rdx
+				mov		rax, [rdx + t_list.next]
+				test	rax, rax					; if (lst->next)
 				je		_return
-				mov		rax, [rbp-18h]				; begin_list
-				mov		rax, [rax]					; rax = *begin_list
-				mov		[rbp-10h], rax				; sub = *begin_list
-sub_loop:		mov		rsi, [rbp-8]				; rsi = main
-				cmp		rax, rsi					; if (sub != main)		; rax = sub, rsi = main
-				je		end_sub_loop
-				mov		rdi, [rax + t_list.data]	; rdi = sub->data
-				mov		rsi, [rax + t_list.next]	; rsi = sub->next
-				mov		rsi, [rsi + t_list.data]	; rsi = rsi->data
-				mov		rdx, [rbp-20h]				; cmp
-				call	rdx							; cmp(sub->data, sub->next->data)
+				mov		rdi, [rdx + t_list.data]	; $rdi = lst->data
+				mov		rsi, [rdx + t_list.next]	; $rsi = lst->next
+				mov		rsi, [rsi + t_list.data]	; $rsi = $rsi->data
+				mov		rax, [rbp-18h]				; cmp
+				call	rax							; cmp(lst->data, lst->next->data)
 				cmp		eax, 0
-				jle		end_swap
-				mov		rdi, [rbp-10h]				; rdi = sub
-				mov		rsi, [rdi + t_list.next]	; rsi = sub->next
-				call	swap						; swap(sub, sub->next)
-end_swap:		mov		rax, [rbp-10h]
-				mov		rax, [rax + t_list.next]
-				mov		[rbp-10h], rax				; sub = sub->next
-				jmp		sub_loop
-end_sub_loop:	mov		rdx, [rbp-8]
+				jle		find_next
+				mov		rdi, [rbp-8]				; $rdi = lst
+				mov		rsi, [rdi + t_list.next]	; $rsi = lst->next
+				call	swap						; swap(lst, lst->next)
+				mov		rdx, [rbp-10h]				; $rdx = begin_list
+				mov		rdx, [rdx]					; $rdx = *$rdx
+				jmp		loop
+find_next:		mov		rdx, [rbp-8]
 				mov		rdx, [rdx + t_list.next]
-				mov		[rbp-8], rdx				; main = main->next
 				jmp		loop
 _return:		pop		rdx
 				mov		rsp, rbp
