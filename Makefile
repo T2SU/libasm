@@ -6,7 +6,7 @@
 #    By: smun <smun@student.42seoul.kr>             +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/02/02 16:51:52 by smun              #+#    #+#              #
-#    Updated: 2021/02/05 02:57:27 by smun             ###   ########.fr        #
+#    Updated: 2021/02/05 03:05:54 by smun             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -65,6 +65,7 @@ mainb		:	bonus $(MAINB_OBJ)
 
 clean		:
 			rm -rf $(OBJ)
+			rm -rf $(BOBJ)
 
 fclean		:	clean
 			rm -rf $(NAME)
