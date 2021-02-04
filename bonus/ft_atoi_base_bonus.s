@@ -31,6 +31,7 @@ _is_valid_base:			push	rbp
 						mov		rbp, rsp
 						sub		rsp, 10h
 						push	rcx
+						push	rdx
 						mov		[rbp-10h], rdi
 						call	_ft_strlen			; ft_strlen(base)
 						cmp		rax, 1				; len <= 1
@@ -62,7 +63,8 @@ is_valid_base_next:		inc		rcx					; i++
 is_valid_base_error:	xor		rax, rax			; return (0)
 						jmp		is_valid_base_return
 is_valid_base_ok:		mov		rax, 1				; return (1)
-is_valid_base_return:	pop		rcx
+is_valid_base_return:	pop		rdx
+						pop		rcx
 						mov		rsp, rbp
 						pop		rbp
 						ret
