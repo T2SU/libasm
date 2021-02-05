@@ -16,12 +16,8 @@
 _ft_strlen:	cld				; clear direction flag (forward)
 			mov		al, 0	; byte to compare
 			mov		rcx, -1	; init rcx to -1
-			repnz	scasb
-			;	while (*(char*)$rdi == $al && rcx)
-			;	{
-			;		rdi++;
-			;		rcx--;
-			;	}
+			repnz	scasb	; repeat while byte[rdi] == al && rcx != 0
+							; rdi++; rcx--;
 			not		rcx		; ~$rcx
 			dec		rcx		; --rcx
 			mov		rax, rcx
