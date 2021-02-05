@@ -8,42 +8,36 @@
 						section	.text
 
 ; static char		*ft_memchr(char *s, int chr, int len)
-_ft_memchr:				mov		al, byte [rdi]		; *s
-						test	al, al
-						je		ft_memchr_not_found
-						test	rdx, rdx			; len
-						je		ft_memchr_not_found
-						dec		rdx					; len--
-						movzx	eax, al
-						cmp		eax, esi			; *s == chr
+_ft_memchr:				mov		al, sil
+						mov		rcx, rdx
+						cld
+						repnz	scasb
 						je		ft_memchr_found
-						inc		rdi					; s++
-						jmp		_ft_memchr
-ft_memchr_found:		mov		rax, rdi			; return (s)
+						xor		rax, rax
 						ret
-ft_memchr_not_found:	xor		rax, rax			; return (0)
+ft_memchr_found:		dec		rdi
+						mov		rax, rdi
 						ret
 
 ; static int		is_valid_base(char *base)
 ;	t_uint64		len;	// [rbp-8]
 ;	char			*_base;	// [rbp-10h]
+;	long			i;		// rbx
 _is_valid_base:			push	rbp
 						mov		rbp, rsp
 						sub		rsp, 10h
-						push	rcx
-						push	rdx
-						push	rsi
+						push	rbx
 						mov		[rbp-10h], rdi
 						call	_ft_strlen			; ft_strlen(base)
 						cmp		rax, 1				; len <= 1
 						jle		is_valid_base_error
 						mov		[rbp-8], rax
-						xor		rcx, rcx			; i = 0
-is_valid_base_loop:		cmp		rcx, [rbp-8]		; i < len
+						xor		rbx, rbx			; i = 0
+is_valid_base_loop:		cmp		rbx, [rbp-8]		; i < len
 						jge		is_valid_base_ok
 						lea		rdi, [rel s_sign]
 						mov		rsi, [rbp-10h]
-						lea		rsi, [rsi + rcx]
+						lea		rsi, [rsi + rbx]
 						movzx	rsi, byte [rsi]
 						mov		rdx, 2
 						call	_ft_memchr			; ft_memchr("+-", *(base + i), 2)
@@ -51,29 +45,27 @@ is_valid_base_loop:		cmp		rcx, [rbp-8]		; i < len
 						jne		is_valid_base_error
 						lea		rdi, [rel s_space]
 						mov		rsi, [rbp-10h]
-						lea		rsi, [rsi + rcx]
+						lea		rsi, [rsi + rbx]
 						movzx	rsi, byte [rsi]
 						mov		rdx, 6
 						call	_ft_memchr			; ft_memchr("\t\n\v\f\r ", *(base + i), 6)
 						test	rax, rax
 						jne		is_valid_base_error
-						cmp		rcx, 1				; i > 0
+						cmp		rbx, 1				; i > 0
 						jle		is_valid_base_next
 						mov		rdi, [rbp-10h]
-						lea		rsi, [rdi + rcx]
+						lea		rsi, [rdi + rbx]
 						movzx	rsi, byte [rsi]
-						mov		rdx, rcx
+						mov		rdx, rbx
 						call	_ft_memchr			; ft_memchr(base, *(base + i), i)
 						test	rax, rax
 						jne		is_valid_base_error
-is_valid_base_next:		inc		rcx					; i++
+is_valid_base_next:		inc		rbx					; i++
 						jmp		is_valid_base_loop
 is_valid_base_error:	xor		rax, rax			; return (0)
 						jmp		is_valid_base_return
 is_valid_base_ok:		mov		rax, 1				; return (1)
-is_valid_base_return:	pop		rsi
-						pop		rdx
-						pop		rcx
+is_valid_base_return:	pop		rbx
 						mov		rsp, rbp
 						pop		rbp
 						ret
@@ -123,48 +115,46 @@ cvt_by_base_return:		mov		rax, [rbp-8]
 ; int				ft_atoi_base(char *str, char *base)
 ;	int64_t			neg;	// [rbp-8]
 ;	char			*_base;	// [rbp-10h]
-;	char			*_str;	// rcx
+;	char			*_str;	// rbx
 _ft_atoi_base:			push	rbp
 						mov		rbp, rsp
 						sub		rsp, 10h
-						push	rcx
-						push	rdx
-						mov		rcx, rdi
+						push	rbx
 						mov		[rbp-10h], rsi
+						mov		rbx, rdi
 						mov		rdi, rsi
 						call	_is_valid_base
 						test	rax, rax
 						je		ft_atoi_base_error
 space_loop:				lea		rdi, [rel s_space]
-						movzx	rsi, byte [rcx]
+						movzx	rsi, byte [rbx]
 						mov		rdx, 6
 						call	_ft_memchr			; ft_memchr("\t\n\v\f\r ", *str, 6)
 						test	rax, rax
 						je		space_end
-						inc		rcx
+						inc		rbx
 						jmp		space_loop
 space_end:				mov		rdx, 1
-sign_loop:				mov		al, byte [rcx]
+sign_loop:				mov		al, byte [rbx]
 						cmp		al, 2Bh				; *str == '+'
 						je		sign_next
 						cmp		al, 2Dh				; *str == '-'
 						jne		sign_end
 						neg		rdx					; neg = -neg
-sign_next:				inc		rcx					; str++
+sign_next:				inc		rbx					; str++
 						jmp		sign_loop
 sign_end:				mov		[rbp-8], rdx
 						mov		rdi, [rbp-10h]
 						call	_ft_strlen			; ft_strlen(base)
 						mov		rdx, rax
-						mov		rdi, rcx
+						mov		rdi, rbx
 						mov		rsi, [rbp-10h]
 						call	_cvt_by_base		; cvt_by_base(str, base, blen)
 						mov		rdx, [rbp-8]
 						imul	rdx					; * neg
 						jmp		ft_atoi_base_return ; return ($?);
 ft_atoi_base_error:		xor		rax, rax			; return (0);
-ft_atoi_base_return:	pop		rdx
-						pop		rcx
+ft_atoi_base_return:	pop		rbx
 						mov		rsp, rbp
 						pop		rbp
 						ret

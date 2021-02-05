@@ -6,7 +6,7 @@
 #    By: smun <smun@student.42seoul.kr>             +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/02/02 16:51:52 by smun              #+#    #+#              #
-#    Updated: 2021/02/05 03:05:54 by smun             ###   ########.fr        #
+#    Updated: 2021/02/05 17:11:29 by smun             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -49,12 +49,10 @@ MAINB_OBJ = $(MAINB_SRC:.c=.o)
 
 all : $(NAME)
 
-$(NAME)		:	$(OBJ)
-			rm -rf $(NAME)
+$(NAME)		:	$(OBJ) dellib
 			$(AR) $(AFLAGS) $(NAME) $(OBJ)
 
-bonus		:	$(BOBJ)
-			rm -rf $(NAME)
+bonus		:	$(BOBJ) dellib
 			$(AR) $(AFLAGS) $(NAME) $(BOBJ)
 
 main		:	$(NAME) $(MAIN_OBJ)
@@ -63,12 +61,14 @@ main		:	$(NAME) $(MAIN_OBJ)
 mainb		:	bonus $(MAINB_OBJ)
 			$(CC) $(CFLAGS) $(LIB_DIR) $(LIB) $(MAINB_OBJ) -o $@
 
+dellib		:
+			rm -rf $(NAME)
+
 clean		:
 			rm -rf $(OBJ)
 			rm -rf $(BOBJ)
 
-fclean		:	clean
-			rm -rf $(NAME)
+fclean		:	clean dellib
 			rm -rf main mainb
 
 re			:	fclean all

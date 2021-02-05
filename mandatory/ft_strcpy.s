@@ -6,62 +6,30 @@
 ;   By: smun <smun@student.42seoul.kr>             +#+  +:+       +#+        ;
 ;                                                +#+#+#+#+#+   +#+           ;
 ;   Created: 2021/02/03 01:04:32 by smun              #+#    #+#             ;
-;   Updated: 2021/02/03 01:37:54 by smun             ###   ########.fr       ;
+;   Updated: 2021/02/05 13:25:54 by smun             ###   ########.fr       ;
 ;                                                                            ;
 ; ************************************************************************** ;
 
 			global	_ft_strcpy
-
+			extern	_ft_strlen
 			section	.text
-;	char		*ft_strcpy(char *dst, const char *src)
-;	{
-;		char	chr;   // al
-;		char	*dest; // rdx
-;
-;		dest = dst;
-;		if (src)
-;		{
-;			while (1)
-;			{
-;				chr = *src;
-;				*dst = chr;
-;				if (!chr)
-;					break;
-;			}
-;		}
-;		return (dest);
-;	}
-;
-;	char		*ft_strcpy(char *dst, const char *src)
-;	{
-;		char	chr;   // al
-;		char	*dest; // rdx
-;
-;		dest = dst;
-;		if (!src)
-;			goto _return;
-;	_loop:
-;		chr = *src;
-;		*dst = chr;
-;		if (!chr)
-;			goto _return;
-;		dst++;
-;		src++;
-;		goto _loop;
-;	_return:
-;		return (dest);
-;	}
-_ft_strcpy:	push	rdx				; char	*dest;
-			mov		rdx, rdi		; dest = dst;
+_ft_strcpy:	push	rbp
+			mov		rbp, rsp
+			sub		rsp, 10h
 			test	rsi, rsi		; if (!src)
 			je		_return			; goto _return;
-_loop:		mov		al, [rsi]		; chr = *src;
-			mov		byte [rdi], al	; *dst = chr;
-			test	al, al			; if (!chr)
-			je		_return			; goto _return;
-			inc		rdi				; dst++;
-			inc		rsi				; src++;
-			jmp		_loop			; goto _loop;
-_return:	mov		rax, rdx		; return (dest);
-			pop		rdx
+			mov		[rbp-8], rdi	; dst
+			mov		[rbp-10h], rsi	; src
+			mov		rdi, rsi
+			call	_ft_strlen
+			mov		rcx, rax
+			mov		rdi, [rbp-8]
+			mov		rsi, [rbp-10h]
+			cld
+			rep		movsb			; copy rcx bytes from rsi to rdi.
+									;  rdi++;  rsi++;  rcx--;
+			mov		byte [rdi], 0	; NULL termination
+			mov		rax, [rbp-8]	; return (dst)
+_return:	mov		rsp, rbp
+			pop		rbp
 			ret

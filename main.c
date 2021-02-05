@@ -6,7 +6,7 @@
 /*   By: smun <smun@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 00:03:58 by smun              #+#    #+#             */
-/*   Updated: 2021/02/04 19:51:59 by smun             ###   ########.fr       */
+/*   Updated: 2021/02/05 16:21:58 by smun             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,8 +102,8 @@ static void		test_strcmp(void)
 	if ((sz = read(STDIN_FILENO, buf2, BUFFER)) > 0)
 		buf2[sz - 1] = '\0';
 	cmp = strcmp(buf1, buf2);
-	if (cmp < 0) cmp = -1;
-	if (cmp > 0) cmp = 1;
+	//if (cmp < 0) cmp = -1;
+	//if (cmp > 0) cmp = 1;
 	printf("[ %-10s] [%10s ]: %08X\n", "libc", "strcmp", cmp);
 	cmp = ft_strcmp(buf1, buf2);
 	printf("[ %-10s] [%10s ]: %08X\n", "libasm", "ft_strcmp", cmp);
