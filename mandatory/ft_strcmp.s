@@ -25,12 +25,11 @@ _ft_strcmp:	push	rbp				; stack frame
 			mov		rsi, [rbp-10h]	; restore s2
 			cld						; clear direction flag (to forward)
 			repe	cmpsb			; repeat while byte[$rsi] == byte[$rdi] and rcx != 0
-			dec		rdi				; decrement s1 pointer
-			dec		rsi				; decrement s2 pointer
-			mov		al, byte [rdi]
-			mov		dl, byte [rsi]
-			sub		al, dl			; *s1 - *s2
-			movsx	rax, al			; return ((long)(*s1 - *s2));
-			mov		rsp, rbp		; restore stack frame
+			dec		rdi
+			dec		rsi
+			movzx	rax, byte [rdi]
+			movzx	rdx, byte [rsi]
+			sub		rax, rdx		; *s1 - *s2
+_return:	mov		rsp, rbp		; restore stack frame
 			pop		rbp
 			ret

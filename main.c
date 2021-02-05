@@ -6,7 +6,7 @@
 /*   By: smun <smun@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 00:03:58 by smun              #+#    #+#             */
-/*   Updated: 2021/02/05 16:21:58 by smun             ###   ########.fr       */
+/*   Updated: 2021/02/05 18:03:25 by smun             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,12 +88,29 @@ static void		test_strcpy(void)
 	}
 }
 
+static int		only_sign(int c)
+{
+	if (c > 0) return 1;
+	else if (c < 0) return -1;
+	return 0;
+}
+
 static void		test_strcmp(void)
 {
 	ssize_t		sz;
 	char		buf1[BUFFER];
 	char		buf2[BUFFER];
 	int			cmp;
+
+	cmp = strcmp("\xff\xff", "\xff");
+	printf("[ %-10s] [%10s ]: (\"\\xff\\xff\", \"\\xff\") %08X\n", "libc", "strcmp", only_sign(cmp));
+	cmp = ft_strcmp("\xff\xff", "\xff");
+	printf("[ %-10s] [%10s ]: (\"\\xff\\xff\", \"\\xff\") %08X\n", "libasm", "ft_strcmp", only_sign(cmp));
+
+	cmp = strcmp("\xff", "\xff\xff");
+	printf("[ %-10s] [%10s ]: (\"\\xff\", \"\\xff\\xff\") %08X\n", "libc", "strcmp", only_sign(cmp));
+	cmp = ft_strcmp("\xff", "\xff\xff");
+	printf("[ %-10s] [%10s ]: (\"\\xff\", \"\\xff\\xff\") %08X\n", "libasm", "ft_strcmp", only_sign(cmp));
 
 	write(STDOUT_FILENO, "First Text: ", 12);
 	if ((sz = read(STDIN_FILENO, buf1, BUFFER)) > 0)
@@ -102,11 +119,9 @@ static void		test_strcmp(void)
 	if ((sz = read(STDIN_FILENO, buf2, BUFFER)) > 0)
 		buf2[sz - 1] = '\0';
 	cmp = strcmp(buf1, buf2);
-	//if (cmp < 0) cmp = -1;
-	//if (cmp > 0) cmp = 1;
-	printf("[ %-10s] [%10s ]: %08X\n", "libc", "strcmp", cmp);
+	printf("[ %-10s] [%10s ]: %08X\n", "libc", "strcmp", only_sign(cmp));
 	cmp = ft_strcmp(buf1, buf2);
-	printf("[ %-10s] [%10s ]: %08X\n", "libasm", "ft_strcmp", cmp);
+	printf("[ %-10s] [%10s ]: %08X\n", "libasm", "ft_strcmp", only_sign(cmp));
 }
 
 static void		print_error(const char *type, ssize_t ret)
